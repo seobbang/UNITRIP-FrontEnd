@@ -1,9 +1,10 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import MainPage from "./Main/pages/MainPage";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import MainPage from './Main/pages/MainPage';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainPage />,
   },
   // {

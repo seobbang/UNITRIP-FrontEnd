@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "꜆₍ᐢ˶•ᴗ•˶ᐢ₎꜆ Husky is running ꜆₍ᐢ˶•ᴗ•˶ᐢ₎꜆"
+pnpm run lint --fix
+echo "٩(ˊᗜˋ*)و Done! ٩(ˊᗜˋ*)و"

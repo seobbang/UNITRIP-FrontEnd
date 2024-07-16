@@ -1,6 +1,7 @@
-import { Global, css } from "@emotion/react";
-import { ReactElement } from "react";
-import { reset } from "./reset";
+import { css, Global } from '@emotion/react';
+import { ReactElement } from 'react';
+
+import { reset } from './reset';
 
 const globalCss = css`
   /* font-face 추가 필요 */
