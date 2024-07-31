@@ -19,13 +19,97 @@ export const COLORS = {
 };
 
 export const FONTS = {
-  // 우리 디자인 시스템으로 교체
-  Button_medium: css`
+  H1: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 3.6rem;
+    font-weight: 700;
+    line-height: 140%;
+  `,
+  H2: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 140%;
+  `,
+  H3: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 140%;
+  `,
+  H4: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 140%;
+  `,
+  H5: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 150%;
+  `,
+  H6: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.7rem;
+    font-weight: 400;
+    line-height: 140%;
+  `,
+
+  Body1: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
     font-style: normal;
     font-size: 1.6rem;
     font-weight: 700;
-    letter-spacing: -0.0031em;
+    line-height: 140%;
+  `,
+  Body2: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 140%;
+  `,
+  Body3: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 140%;
+  `,
+  Body4: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 140%;
+  `,
+  Body5: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 140%;
+  `,
 
-    /* font-family: Pretendard; */
+  Small1: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 150%;
+  `,
+  Small2: css`
+    font-family: 'Apple SD Gothic Neo', sans-serif;
+    font-style: normal;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 150%;
   `,
 };
