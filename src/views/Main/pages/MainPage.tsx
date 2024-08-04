@@ -6,15 +6,14 @@ const myCss1 = css`
   display: flex;
   justify-content: center;
 
-  width: 100%;
-  padding: 1rem;
-  border: solid 1px black;
+  width: 100dvw;
+  height: 100dvh;
+
+  background-color: white;
 
   color: ${COLORS.star};
 
-  cursor: pointer;
-
-  ${FONTS.Small1};
+  ${FONTS.Body3};
 `;
 
 const MainPage = () => {
