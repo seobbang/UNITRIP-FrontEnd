@@ -8,6 +8,8 @@ const globalCss = css`
   ${reset}
 
   #root, body, html {
+    margin: 0 auto;
+
     background-color: #f5f5f5;
     max-width: 90rem;
     -ms-overflow-style: none; /* 인터넷 익스플로러 */

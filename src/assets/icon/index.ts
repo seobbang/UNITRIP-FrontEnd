@@ -1,2 +1,2 @@
-// export { default as LogoIcon } from "./btn_logo.svg";
-// export { default as SearchIcon } from "./ic_search.svg";
+/// <reference types="vite-plugin-svgr/client" />
+// export { default as LogoIcon } from "./btn_logo.svg?react";
