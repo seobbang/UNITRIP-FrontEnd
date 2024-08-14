@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import MenuBar from '@/components/MenuBar';
 import { COLORS, FONTS } from '@/styles/constants';
 
 import Header from '../components/Header';
@@ -26,6 +27,7 @@ const MainPage = () => {
         <div css={graySpacing} />
         <RecommendedTravel />
       </main>
+      <MenuBar />
     </>
   );
 };

@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 
 import { SearchMonoIcon, UnitripIcon } from '@/assets/icon';
+import { COLORS } from '@/styles/constants';
 
 const Header = () => {
   return (
     <header css={header}>
       <UnitripIcon />
-      <button onClick={() => {}}>
+      <button onClick={() => {}} css={searchCss}>
         <SearchMonoIcon />
       </button>
     </header>
@@ -23,4 +24,8 @@ const header = css`
   width: 100vw;
   height: 4.8rem;
   padding: 0 2rem;
+`;
+
+const searchCss = css`
+  color: ${COLORS.gray5};
 `;
