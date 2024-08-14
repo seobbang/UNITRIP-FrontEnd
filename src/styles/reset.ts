@@ -29,11 +29,6 @@ export const reset = css`
     font-size: 62.5%;
   }
 
-  html,
-  body {
-    height: 100%;
-  }
-
   img,
   picture,
   video,
