@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import DetailPage from './views/Detail/pages/DetailPage';
 import MainPage from './views/Main/pages/MainPage';
 
 const router = createBrowserRouter([
@@ -7,6 +8,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <MainPage />,
   },
+  { path: '/detail', element: <DetailPage /> },
   // {
   //   path: "*",
   //   element: <ErrorPage />,
