@@ -19,13 +19,14 @@ const PATH_MATCH = [
 
 const MenuBar = () => {
   const { pathname } = useLocation();
+  const firstPathname = `/${pathname.split('/')[1]}`;
 
   const menuList = PATH_MATCH.map(({ url, name, icon }) => {
     return (
       <Link
         key={url}
         to={url}
-        className={pathname === url ? 'selected' : ''}
+        className={firstPathname === url ? 'selected' : ''}
         css={linkCss}>
         {icon}
         <span css={spanCss}>{name}</span>

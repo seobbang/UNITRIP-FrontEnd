@@ -5,6 +5,8 @@ import DetailPage from './views/Detail/pages/DetailPage';
 import LoginCallBack from './views/Login/components/LoginCallBack';
 import MainPage from './views/Main/pages/MainPage';
 import Mypage from './views/Mypage/pages/Mypage';
+import SearchPage from './views/Search/pages/SearchPage';
+import SearchResultPage from './views/Search/pages/SearchResultPage';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +18,15 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/detail', element: <DetailPage /> },
+  {
+    path: '/search',
+    element: <SearchPage />,
+    children: [{}],
+  },
+  {
+    path: '/search/:word',
+    element: <SearchResultPage />,
+  },
   {
     path: '/mypage',
     element: <Mypage />,

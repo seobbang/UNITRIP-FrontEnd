@@ -97,4 +97,6 @@ const closeButtonCss = css`
   position: absolute;
   top: 2rem;
   right: 2rem;
+
+  color: ${COLORS.gray5};
 `;
