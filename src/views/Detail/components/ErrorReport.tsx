@@ -1,12 +1,20 @@
 import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 import { RequestImage } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
 
 function ErrorReport() {
+  const navigate = useNavigate();
+
   return (
     <div css={errorReportContainer}>
-      <button css={reportButton} type="button">
+      <button
+        css={reportButton}
+        type="button"
+        onClick={() => {
+          navigate('/error-report');
+        }}>
         <div css={textContainer}>
           <span css={text('main')}>
             알고 계신 정보와 다른 정보가 있나요?

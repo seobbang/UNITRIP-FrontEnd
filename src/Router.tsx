@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Settings from './components/Settings';
 import DetailPage from './views/Detail/pages/DetailPage';
+import ErrorReportPage from './views/ErrorReport/pages/ErrorReportPage';
 import LoginCallBack from './views/Login/components/LoginCallBack';
 import MainPage from './views/Main/pages/MainPage';
 import Mypage from './views/Mypage/pages/Mypage';
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
     path: '/mypage',
     element: <Mypage />,
   },
+  { path: '/error-report', element: <ErrorReportPage /> },
   // {
   //   path: "*",
   //   element: <ErrorPage />,

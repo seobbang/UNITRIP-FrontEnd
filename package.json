@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.11.4",
+    "@types/lodash": "^4.17.7",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
@@ -40,6 +41,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.8",
+    "lodash": "^4.17.21",
     "postcss": "^8.4.39",
     "postcss-styled-syntax": "^0.6.4",
     "prettier": "^3.3.2",
