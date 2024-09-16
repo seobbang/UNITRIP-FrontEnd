@@ -4,6 +4,7 @@ import Settings from './components/Settings';
 import DetailPage from './views/Detail/pages/DetailPage';
 import ErrorReportPage from './views/ErrorReport/pages/ErrorReportPage';
 import LoginCallBack from './views/Login/components/LoginCallBack';
+import SignUpPage from './views/Login/pages/SignUpPage';
 import MainPage from './views/Main/pages/MainPage';
 import Mypage from './views/Mypage/pages/Mypage';
 import SearchPage from './views/Search/pages/SearchPage';
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: '/', element: <MainPage /> },
       { path: '/auth/callback', element: <LoginCallBack /> },
       { path: '/detail', element: <DetailPage /> },
+      { path: '/sign-up', element: <SignUpPage /> },
     ],
   },
   { path: '/detail', element: <DetailPage /> },

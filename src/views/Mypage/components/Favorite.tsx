@@ -4,26 +4,13 @@ import { Link } from 'react-router-dom';
 import { MypageHeartIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 
-import { currentTabType } from '../pages/Mypage';
 import FavoritePlaceList from './FavoritePlaceList';
-import MypageHeader from './MypageHeader';
 
 const favoriteList = [];
 
-interface FavoriteProps {
-  handleSetCurrentTab: (clicked: currentTabType) => void;
-}
-
-const Favorite = (props: FavoriteProps) => {
-  const { handleSetCurrentTab } = props;
-
+const Favorite = () => {
   return (
     <>
-      <MypageHeader
-        handleSetCurrentTab={handleSetCurrentTab}
-        state={'favorite'}
-      />
-
       {favoriteList.length === 0 ? (
         <div css={emptyContainer}>
           <MypageHeartIcon />

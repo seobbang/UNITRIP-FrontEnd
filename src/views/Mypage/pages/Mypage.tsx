@@ -1,41 +1,45 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
+import { HeaderBackIcon } from '@/assets/icon';
+import BottomButton from '@/components/BottomButton';
+import Header from '@/components/Header';
 import MenuBar from '@/components/MenuBar';
-import SelectTravelerType from '@/components/SelectTravelerType';
+import TravelerType from '@/components/TravelerType';
 
 import Favorite from '../components/Favorite';
 import Main from '../components/Main';
 import PersonalInfo from '../components/PersonalInfo';
-
-export type currentTabType =
-  | 'main'
-  | 'personalInfo'
-  | 'favoritePlace'
-  | 'travelerType';
+import { MYPAGE_TAB_CONTENTS } from '../constants/text';
 
 const Mypage = () => {
-  const [currentTab, setCurrentTab] = useState<currentTabType>('main');
+  const [currentTab, setCurrentTab] = useState<string>('main');
+  const [travelerTypes, setTravelerTypes] = useState<string[]>([]);
 
-  const handleSetCurrentTab = (clicked: currentTabType) => {
-    setCurrentTab(clicked);
+  const backToMainTab = () => {
+    setCurrentTab('main');
   };
 
-  const renderComponent = (state: currentTabType) => {
+  const handleSetCurrentTab = (clickedTab: string) => {
+    setCurrentTab(clickedTab);
+  };
+
+  const handleData = () => {};
+
+  const renderComponent = (state: string) => {
     switch (state) {
       case 'main':
         return <Main handleSetCurrentTab={handleSetCurrentTab} />;
-      case 'personalInfo':
-        return <PersonalInfo handleSetCurrentTab={handleSetCurrentTab} />;
-      case 'favoritePlace':
-        return <Favorite handleSetCurrentTab={handleSetCurrentTab} />;
-      case 'travelerType':
+      case MYPAGE_TAB_CONTENTS.PERSONAL_INFO:
+        return <PersonalInfo />;
+      case MYPAGE_TAB_CONTENTS.FAVORITE_TRAVEL_LIST:
+        return <Favorite />;
+      case MYPAGE_TAB_CONTENTS.TRAVELER_TYPE:
         return (
-          <SelectTravelerType
-            handleSetCurrentTab={handleSetCurrentTab}
-            page="mypage">
-            저장
-          </SelectTravelerType>
+          <TravelerType
+            travelerType={travelerTypes}
+            setTravelerType={setTravelerTypes}
+          />
         );
       default:
         return null;
@@ -43,15 +47,23 @@ const Mypage = () => {
   };
 
   return (
-    <div css={mypageContainer}>
-      {renderComponent(currentTab)}
-
-      {currentTab === 'main' && (
-        <footer css={footer}>
-          <MenuBar />
-        </footer>
+    <>
+      {currentTab === 'main' ? (
+        <Header title="마이페이지" />
+      ) : (
+        <Header
+          title={currentTab}
+          leftIcon={HeaderBackIcon}
+          leftFn={backToMainTab}
+        />
       )}
-    </div>
+      <div css={mypageContainer}>{renderComponent(currentTab)}</div>
+      {currentTab === 'main' ? (
+        <MenuBar />
+      ) : (
+        <BottomButton text="저장" clickedFn={handleData} />
+      )}
+    </>
   );
 };
 
@@ -62,12 +74,8 @@ const mypageContainer = css`
   flex-direction: column;
 
   width: 100dvw;
-  height: 100dvh;
+  height: calc(100dvh - 8rem - 4.8rem);
   padding: 0 2rem;
 
   background-color: white;
-`;
-
-const footer = css`
-  margin-left: -2rem;
 `;

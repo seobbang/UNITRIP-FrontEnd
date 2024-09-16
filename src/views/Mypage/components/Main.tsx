@@ -4,39 +4,28 @@ import { ArrowRightIcon } from '@/assets/icon';
 import { ProfileImg } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
 
-import { currentTabType } from '../pages/Mypage';
-
-interface TabItemType {
-  name: string;
-  tab: currentTabType;
-}
+import { MYPAGE_TAB_CONTENTS } from '../constants/text';
 
 interface MainProps {
-  handleSetCurrentTab: (clicked: currentTabType) => void;
+  handleSetCurrentTab: (clicked: string) => void;
 }
-
-const MYPAGE_TAB_ITEM: TabItemType[] = [
-  { name: '개인정보 조회 및 변경', tab: 'personalInfo' },
-  { name: '저장한 여행지 목록', tab: 'favoritePlace' },
-  { name: '여행자 유형 설정', tab: 'travelerType' },
-];
 
 function Main(props: MainProps) {
   const { handleSetCurrentTab } = props;
+
   return (
     <div>
-      <header css={header}>마이페이지</header>
       <section css={profileSection}>
         <img src={ProfileImg} alt="프로필이미지_사진" css={profileImage} />
         <span css={InfoText}>서아람</span>
       </section>
       <ul>
-        {MYPAGE_TAB_ITEM.map((item) => (
+        {Object.entries(MYPAGE_TAB_CONTENTS).map(([key, name]) => (
           <li
             css={tabItem('tab')}
-            key={item.tab}
-            onClick={() => handleSetCurrentTab(item.tab)}>
-            <p>{item.name}</p>
+            key={key}
+            onClick={() => handleSetCurrentTab(name)}>
+            <p>{name}</p>
             <ArrowRightIcon />
           </li>
         ))}
@@ -49,15 +38,6 @@ function Main(props: MainProps) {
 }
 
 export default Main;
-
-const header = css`
-  width: 100%;
-  padding: 1rem;
-
-  color: ${COLORS.brand1};
-
-  ${FONTS.H4};
-`;
 
 const profileSection = css`
   display: flex;
