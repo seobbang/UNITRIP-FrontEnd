@@ -17,7 +17,7 @@ interface MainProps {
 
 const MYPAGE_TAB_ITEM: TabItemType[] = [
   { name: '개인정보 조회 및 변경', tab: 'personalInfo' },
-  { name: '찜한 여행지 목록', tab: 'favoritePlace' },
+  { name: '저장한 여행지 목록', tab: 'favoritePlace' },
   { name: '여행자 유형 설정', tab: 'travelerType' },
 ];
 

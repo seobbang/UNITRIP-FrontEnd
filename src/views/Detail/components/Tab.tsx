@@ -53,7 +53,7 @@ const tabContainer = css`
 
 const tabList = css`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 
   padding: 1rem 2.4rem 0 2.5rem;
   border-bottom: 0.1rem solid ${COLORS.gray2};

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { ArrowDownIcon, CallIcon, ClockIcon, MapPinIcon } from '@/assets/icon';
+import { CallIcon, ClockIcon, MapPinIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 
 function PlaceInfo() {
@@ -17,7 +17,6 @@ function PlaceInfo() {
       <div css={listItem}>
         <ClockIcon />
         <span>수요일 10:00-19:00</span>
-        <ArrowDownIcon />
       </div>
     </section>
   );

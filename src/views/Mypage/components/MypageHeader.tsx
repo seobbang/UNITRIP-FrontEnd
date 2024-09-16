@@ -12,7 +12,7 @@ interface HeaderProps {
 
 const HEADER_CONTENTS = [
   { state: 'personalInfo', content: '개인정보 조회 및 변경' },
-  { state: 'favorite', content: '찜한 여행지 목록' },
+  { state: 'favorite', content: '저장한 여행지 목록' },
   { state: 'travelerType', content: '' },
 ];
 

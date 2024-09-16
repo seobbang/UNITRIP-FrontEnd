@@ -1,67 +1,35 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
 
-import { ArrowToggleClosed, ArrowToggleOpen } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 
 interface FacilityIConListProps {
   title: string;
   facilities: Facility[];
-  toggleKey: keyof ToggleType;
 }
 
 interface Facility {
   name: string;
-  default: JSX.Element;
-  none: JSX.Element;
-}
-
-interface ToggleType {
-  basic: boolean;
-  physical: boolean;
-  visual: boolean;
-  hearing: boolean;
-  infantFamily: boolean;
-  others: boolean;
+  active: JSX.Element;
+  inactive: JSX.Element;
 }
 
 function FacilityIconList(props: FacilityIConListProps) {
-  const { title, facilities, toggleKey } = props;
-
-  const [toggles, setToggles] = useState<ToggleType>({
-    basic: true,
-    physical: false,
-    visual: false,
-    hearing: false,
-    infantFamily: false,
-    others: false,
-  });
-
-  const handleSetToggles = (clicked: keyof typeof toggles) => {
-    setToggles((prev) => {
-      return {
-        ...prev,
-        [clicked]: !prev[clicked],
-      };
-    });
-  };
+  const { title, facilities } = props;
 
   return (
-    <div css={listWrapper} onClick={() => handleSetToggles(toggleKey)}>
+    <div css={listWrapper}>
       <div css={titleText}>
         <span>{title}</span>
-        {toggles[toggleKey] ? <ArrowToggleOpen /> : <ArrowToggleClosed />}
       </div>
-      {toggles[toggleKey] && (
-        <ul css={iconList}>
-          {facilities.map((item: Facility) => (
-            <li key={item.name} css={iconWrapper}>
-              {item.default}
-              <span css={iconName}>{item.name}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+
+      <ul css={iconList}>
+        {facilities.map((item: Facility) => (
+          <li key={item.name} css={iconWrapper}>
+            {item.active}
+            <span css={iconName(item.name)}>{item.name}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -99,14 +67,21 @@ const iconWrapper = css`
   align-items: center;
   flex-direction: column;
 
+  padding: 0 0.5rem;
+
   max-width: 7rem;
 `;
 
-const iconName = css`
+const iconName = (text: string) => css`
   word-break: keep-all;
 
   color: ${COLORS.gray5};
   text-align: center;
-
   ${FONTS.Small2};
+
+  ${(text === '점형/선형 블록' || text === '오디오가이드') &&
+  `
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
+  `}
 `;

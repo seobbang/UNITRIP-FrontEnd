@@ -2,30 +2,21 @@ import { css } from '@emotion/react';
 
 import { COLORS, FONTS } from '@/styles/constants';
 
-const InfoContents = [
-  {
-    title: '휴무일',
-    content: '연중무휴',
-  },
-  {
-    title: '이용시간',
-    content: '주중 10:30~22:30 (매표마감 21:30)',
-  },
-  {
-    title: '이용요금',
-    content: '-',
-  },
-];
-
 function DetailInfo() {
   return (
     <section css={detailInfoContainer}>
-      {InfoContents.map((item) => (
-        <div css={infoItem} key={item.title}>
-          <span css={title}>{item.title}</span>
-          <p css={content}>{item.content}</p>
-        </div>
-      ))}
+      <div css={infoItem}>
+        <span css={title}>휴무일</span>
+        <p css={content}>연중무휴</p>
+      </div>
+      <div css={infoItem}>
+        <span css={title}>이용시간</span>
+        <p css={content}>주중 10:30~22:30 (매표마감 21:30)</p>
+      </div>
+      <div css={infoItem}>
+        <span css={title}>이용요금</span>
+        <p css={content}>-</p>
+      </div>
     </section>
   );
 }

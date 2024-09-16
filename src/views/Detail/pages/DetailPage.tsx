@@ -27,7 +27,8 @@ function DetailPage() {
 
       {selectedTab === '상세정보' ||
       selectedTab === '유니버설' ||
-      selectedTab === '지도' ? (
+      selectedTab === '지도' ||
+      selectedTab === '사진' ? (
         <ErrorReport />
       ) : null}
     </div>
@@ -48,6 +49,11 @@ const backgroundImg = css`
   width: auto;
   height: 26.3rem;
 
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0%) 0%,
+    rgb(0 0 0 / 34%) 100%
+  );
   background-size: cover;
   background-image: url(${BackgroundImage});
   background-repeat: no-repeat;

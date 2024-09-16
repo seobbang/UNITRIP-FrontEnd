@@ -28,7 +28,7 @@ const Favorite = (props: FavoriteProps) => {
         <div css={emptyContainer}>
           <MypageHeartIcon />
           <p css={emptyText}>
-            아직 찜한 여행지가 없어요
+            아직 저장한 여행지가 없어요
             <br />
             유니트립 여행지를 더 둘러볼까요?
           </p>
