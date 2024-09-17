@@ -7,7 +7,7 @@ import {
   INFANT_FACILITIES,
   PHYSICAL_FACILITIES,
   VISUAL_FACILITIES,
-} from '../constants/constants';
+} from '../../../constants/facilities';
 import FacilityIconList from './FacilityIconList';
 
 function Universal() {
