@@ -8,6 +8,7 @@ export const getStorageSearchWord = (): string[] => {
 };
 
 export const setStorageSearchWord = (newValue: string) => {
+  if (newValue === '') return;
   const previousList: string[] = JSON.parse(localStorage.getItem(key) || '[]');
 
   // 이미 존재하는지 확인
