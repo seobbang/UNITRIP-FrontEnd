@@ -20,7 +20,12 @@ function FavoritePlaceList() {
     <ul css={listContainer}>
       {FAVORITE_SAMPLE.map((item) => (
         <li key={item.name} css={itemContainer}>
-          <PlaceCard placeName={item.name} address={item.address} />
+          <PlaceCard
+            placeName={item.name}
+            address={item.address}
+            imgSrc={''}
+            onClickHeart={() => console.log('click')}
+          />
         </li>
       ))}
     </ul>
