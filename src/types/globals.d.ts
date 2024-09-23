@@ -8,6 +8,10 @@ declare global {
         authorize(options: { redirectUri: string }): void;
       };
     };
+
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    kakao: any;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
   }
 }
 
