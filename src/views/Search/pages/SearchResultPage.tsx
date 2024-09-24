@@ -18,6 +18,7 @@ import {
   createInitialFilterState,
   MAP_CATEGORY_FACILITIES,
 } from '../constants/category';
+import { STORAGE_KEY } from '../constants/localStorageKey';
 import { category } from '../types/category';
 
 const SearchResultPage = () => {
@@ -25,12 +26,14 @@ const SearchResultPage = () => {
 
   const { pathname } = useLocation();
   const [filterState, setFilterState] = useState(() =>
-    createInitialFilterState(),
+    createInitialFilterState('physical'),
   );
 
   // modal, bottom sheet state
   const [placeList, setPlaceList] = useState<SearchResItem[]>([]);
-  const [showGuide, setShowGuide] = useState(() => isGuideShown());
+  const [showGuide, setShowGuide] = useState(() =>
+    isGuideShown(STORAGE_KEY.hideSearchGuide),
+  );
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   // state handling func

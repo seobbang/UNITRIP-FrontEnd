@@ -14,7 +14,7 @@ const Guide = (props: GuideProps) => {
   const { handleSetShowGuide } = props;
 
   const hideGuideForADay = () => {
-    setStorageHideGuide(STORAGE_KEY.hideSearchGuide);
+    setStorageHideGuide(STORAGE_KEY.hideReviewFilterGuide);
     handleSetShowGuide(false);
   };
 
@@ -27,13 +27,12 @@ const Guide = (props: GuideProps) => {
           onClick={() => handleSetShowGuide(false)}>
           <XMonoIcon />
         </button>
+        <p css={textCss}>
+          내가 설정한 여행자 유형 필터는
+          <br />더 빠르게 만나볼 수 있어요!
+        </p>
       </div>
       <div css={section2Css}>
-        <p css={textCss}>
-          내가 설정한 여행자 유형이
-          <br />
-          필터에 반영되었어요!
-        </p>
         <button type="button" css={buttonTextCss} onClick={hideGuideForADay}>
           <CheckFillIcon /> 하루동안 보지 않기
         </button>
@@ -56,15 +55,17 @@ const containerCss = css`
 
 const section1Css = css`
   position: relative;
+  padding-top: 45rem;
 
-  height: 6.4rem;
+  height: 55rem;
 
   background-color: rgb(82 82 82 / 72%);
 `;
 
 const section2Css = css`
   height: 100%;
-  margin-top: 4.6rem;
+  margin-top: 6rem;
+  padding-top: 1.25rem;
 
   background-color: rgb(82 82 82 / 72%);
 `;
@@ -89,8 +90,9 @@ const textCss = css`
 const buttonTextCss = css`
   display: flex;
   gap: 0.6rem;
+  align-items: center;
 
-  margin: 2.8rem 0 0 2rem;
+  margin-left: 2rem;
 
   color: ${COLORS.white};
 

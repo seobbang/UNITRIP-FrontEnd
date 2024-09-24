@@ -22,9 +22,11 @@ const ToastMessage = (props: ToastMessageProps) => {
   }, [setToast]);
 
   return (
-    <div css={toastMessageContainer}>
-      <CheckFilledYellowIcon />
-      <span>{children}</span>
+    <div css={rootContainer}>
+      <div css={toastMessageContainer}>
+        <CheckFilledYellowIcon />
+        <span>{children}</span>
+      </div>
     </div>
   );
 };
@@ -36,6 +38,16 @@ const fadeout = keyframes`
   100% {opacity:0};
 `;
 
+const rootContainer = css`
+  position: fixed;
+  left: 0;
+  bottom: 7.5rem;
+
+  width: 100%;
+
+  padding: 0 2rem;
+`;
+
 const toastMessageContainer = () => css`
   display: flex;
   gap: 1.2rem;
@@ -43,7 +55,7 @@ const toastMessageContainer = () => css`
 
   width: 100%;
   padding: 1.7rem 0 1.7rem 2.4rem;
-  border-radius: 1.6rem;
+  border-radius: 1rem;
 
   background-color: ${COLORS.brand1};
 

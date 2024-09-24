@@ -1,26 +1,22 @@
-import { STORAGE_KEY } from '@/views/Search/constants/localStorageKey';
-
-const key = STORAGE_KEY.hideSearchGuide;
-
-const getStorageHideGuide = () => {
+const getStorageHideGuide = (key: string) => {
   const hideGuideTime = localStorage.getItem(key);
   return hideGuideTime ? Number(hideGuideTime) : null;
 };
 
 // 24시간을 ms로
 const EXPIRATION_PERIOD = 24 * 60 * 60 * 1000;
-export const setStorageHideGuide = () => {
+export const setStorageHideGuide = (key: string) => {
   const date = new Date();
   const expirationTime = date.getTime() + EXPIRATION_PERIOD;
   localStorage.setItem(key, String(expirationTime));
 };
 
-const removeStorageHideGuide = () => {
+const removeStorageHideGuide = (key: string) => {
   localStorage.removeItem(key);
 };
 
-export const isGuideShown = () => {
-  const hideGuideTime = getStorageHideGuide();
+export const isGuideShown = (key: string) => {
+  const hideGuideTime = getStorageHideGuide(key);
   const nowDate = new Date();
 
   if (hideGuideTime) {
@@ -30,7 +26,7 @@ export const isGuideShown = () => {
     }
     // 만료 O
     else {
-      removeStorageHideGuide();
+      removeStorageHideGuide(key);
       return true;
     }
   }

@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Settings from './components/Settings';
 import DetailPage from './views/Detail/pages/DetailPage';
+import WriteReviewPage from './views/Detail/pages/WriteReviewPage';
 import ErrorReportPage from './views/ErrorReport/pages/ErrorReportPage';
 import LoginCallBack from './views/Login/components/LoginCallBack';
 import SignUpPage from './views/Login/pages/SignUpPage';
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     ],
   },
   { path: '/detail', element: <DetailPage /> },
+  { path: '/detail/review/write', element: <WriteReviewPage /> },
   {
     path: '/search',
     element: <SearchPage />,

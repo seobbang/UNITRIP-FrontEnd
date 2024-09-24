@@ -102,9 +102,13 @@ export { default as VideoGuideInActiveIcon } from './icon_videoguide_inactive.sv
 export { default as WheelChairAcitveIcon } from './icon_wheelchair_active.svg?react';
 export { default as WheelChairInAcitveIcon } from './icon_wheelchair_inactive.svg?react';
 
+export { default as EmptyPhotoIcon } from './icon_empty_photo.svg?react';
+export { default as PencilMonoIcon } from './icon-pencil-mono.svg?react';
+export { default as SmallStarIcon } from './small_star.svg?react';
+export { default as BigStarIcon } from './icon-big-star.svg?react';
+export { default as BigStarFillIcon } from './icon-big-star-fill.svg?react';
 export { default as ArrowBackIconIosDownIcon } from './icon-arrow-back-ios-down.svg?react';
 export { default as ArrowBackIconIosUpIcon } from './icon-arrow-back-ios-up.svg?react';
-export { default as EmptyPhotoIcon } from './icon_empty_photo.svg?react';
 
 //Universal Filter
 export { default as AudioGuideDefaultIcon } from './audioguide_default.svg?react';
@@ -129,6 +133,9 @@ export { default as GuideSystemDefaultIcon } from './guidesystem_default.svg?rea
 export { default as GuideSystemSelectedIcon } from './guidesystem_selected.svg?react';
 export { default as HelpDogDefaultIcon } from './helpdog_default.svg?react';
 export { default as HelpDogSelectedIcon } from './helpdog_selected.svg?react';
+export { default as CameraIcon } from './icon-camera.svg?react';
+export { default as ToggleXFillIcon } from './toggle-fill-x.svg?react';
+export { default as NoReviewIcon } from './no_reveiw_image.svg?react';
 export { default as LactationRoomDefaultIcon } from './lactationroom_default.svg?react';
 export { default as LactationRoomSelectedIcon } from './lactationroom_selected.svg?react';
 export { default as ParkingDefaultIcon } from './parking_default.svg?react';
