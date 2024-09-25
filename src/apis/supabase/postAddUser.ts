@@ -1,9 +1,9 @@
 import { Region } from '@/components/SelectRegion';
-import { KakaoUserDataProps } from '@/types/type';
+import { KakaoUserDataResponse } from '@/types/userAPI';
 import { unitripSupabase } from '@/utils/supabaseClient';
 
 interface AddUserProps {
-  userData: KakaoUserDataProps;
+  userData: KakaoUserDataResponse;
   region: Region;
   travelerType: string[];
 }

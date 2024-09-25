@@ -1,4 +1,4 @@
-import usePostKakaoLogin from '../../../api/usePostKakaoLogin';
+import usePostKakaoLogin from '../../../apis/usePostKakaoLogin';
 
 const LoginCallBack = () => {
   usePostKakaoLogin();
