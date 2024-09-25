@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { HeaderBackIcon } from '@/assets/icon';
 import Header from '@/components/Header';
@@ -11,6 +11,8 @@ import UserType from '../components/UserType';
 
 const SignUpPage = () => {
   const [step, setStep] = useState('지역 설정');
+
+  const { state } = useLocation();
 
   const navigate = useNavigate();
 
@@ -28,7 +30,7 @@ const SignUpPage = () => {
       return <Region setStep={setStep} />;
     }
     if (step === '여행자 유형 설정') {
-      return <UserType />;
+      return <UserType userData={state} />;
     }
   };
 

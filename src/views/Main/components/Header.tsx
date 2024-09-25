@@ -4,20 +4,10 @@ import { SearchMonoIcon, UnitripIcon } from '@/assets/icon';
 import { COLORS } from '@/styles/constants';
 
 const Header = () => {
-  const handleLogin = () => {
-    if (window.Kakao && window.Kakao.Auth) {
-      window.Kakao.Auth.authorize({
-        redirectUri:
-          import.meta.env.VITE_LOCAL_REDIRECT_URI ||
-          import.meta.env.VITE_REDIRECT_URI,
-      });
-    }
-  };
-
   return (
     <header css={header}>
       <UnitripIcon />
-      <button onClick={handleLogin} css={searchCss}>
+      <button css={searchCss}>
         <SearchMonoIcon />
       </button>
     </header>

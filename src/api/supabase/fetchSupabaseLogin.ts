@@ -9,7 +9,7 @@ const fetchSupabaseLogin = async (token: string) => {
   });
 
   if (!session) {
-    console.log('로그인 실패');
+    throw new Error('supabase 로그인 실패');
   }
 };
 

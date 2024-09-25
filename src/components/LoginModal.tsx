@@ -1,6 +1,5 @@
 import { css } from '@emotion/react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
 
 import { KakaoTalkIcon, XMonoIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -16,15 +15,26 @@ interface LoginModalProps {
 const LoginModal = (props: LoginModalProps) => {
   const { onClick } = props;
 
+  const handleLogin = () => {
+    if (window.Kakao && window.Kakao.Auth) {
+      window.Kakao.Auth.authorize({
+        redirectUri:
+          import.meta.env.VITE_LOCAL_REDIRECT_URI ||
+          import.meta.env.VITE_REDIRECT_URI,
+        scope: 'profile_nickname, profile_image, account_email',
+      });
+    }
+  };
+
   const portalContent = (
     <div css={backgroundCss}>
       <div css={container}>
         <p css={titleCss}>카카오톡 로그인</p>
         <p css={descriptionCss}>서비스 이용을 위해 로그인이 필요해요.</p>
-        <Link to="/login" css={linkCss}>
+        <button type="button" css={linkCss} onClick={handleLogin}>
           <KakaoTalkIcon />
           카카오톡 로그인
-        </Link>
+        </button>
         <button type="button" css={closeButtonCss} onClick={onClick}>
           <XMonoIcon />
         </button>

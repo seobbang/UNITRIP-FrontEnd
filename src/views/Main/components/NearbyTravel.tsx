@@ -1,16 +1,32 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import LoginModal from '@/components/LoginModal';
 import { COLORS, FONTS } from '@/styles/constants';
 
 import { cardContainer, scrollContainer } from '../styles/main';
 import TravelCard from './TravelCard';
 
-const NearbyTravel = () => {
-  const isLoggedIn = true;
+interface NearbyTravelProps {
+  isLoggedIn: boolean;
+  region?: string; // prop 타입 수정
+}
+
+const NearbyTravel = ({ isLoggedIn, region }: NearbyTravelProps) => {
+  const [activateModal, setActivateModal] = useState(false);
+
+  const closeModal = () => {
+    setActivateModal(false);
+  };
+
+  const showModal = () => {
+    setActivateModal(true);
+  };
+
   return (
     <section css={container}>
-      <h2 css={title}>{isLoggedIn && '서울'} 주변 갈 만한 여행지 🗺️</h2>
+      <h2 css={title}>{isLoggedIn && region} 주변 갈 만한 여행지 🗺️</h2>
       {isLoggedIn ? (
         <>
           <div css={scrollContainer}>
@@ -34,7 +50,7 @@ const NearbyTravel = () => {
             </li>
           </div>
           <Link to="" css={link}>
-            서울 여행지 둘러보기
+            {region} 여행지 둘러보기
           </Link>
         </>
       ) : (
@@ -44,9 +60,12 @@ const NearbyTravel = () => {
             <br />
             카카오톡 로그인이 필요해요!
           </p>
-          <button css={button}>여행지 추천받기</button>
+          <button type="button" css={button} onClick={showModal}>
+            여행지 추천받기
+          </button>
         </div>
       )}
+      {activateModal && <LoginModal onClick={closeModal} />}
     </section>
   );
 };
