@@ -4,10 +4,10 @@ import { MutableRefObject } from 'react';
 import { BigInfoIcon } from '@/assets/icon';
 import PlaceCard from '@/components/PlaceCard';
 import { COLORS, FONTS } from '@/styles/constants';
-import { SearchResItem } from '@/types/search';
+import { SearchItem } from '@/types/search';
 
 interface SearchResultProps {
-  placeList: SearchResItem[];
+  placeList: SearchItem[];
   targetElement: MutableRefObject<HTMLDivElement | null>;
   loading: boolean;
 }

@@ -61,10 +61,10 @@ const cardContainerCss = (imgSrc: string, placeName: string) => css`
   height: 16.8rem;
   border-radius: 1.2rem;
 
-  background-image: url(${imgSrc});
-  background-size: cover;
-  background-position: center center;
   background-color: ${placeName ? COLORS.gray4 : COLORS.gray2};
+  background-position: center center;
+  background-size: cover;
+  background-image: url(${imgSrc});
 `;
 
 const backgroundCss = css`
@@ -76,24 +76,26 @@ const backgroundCss = css`
   height: 16.8rem;
   border-radius: 1.2rem;
 
-  color: ${COLORS.white};
-
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.34) 100%
+    rgb(0 0 0 / 0%) 0%,
+    rgb(0 0 0 / 34%) 100%
   );
+
+  color: ${COLORS.white};
 `;
 
 const titleCss = css`
-  margin: 9.4rem 0 0 1.6rem;
-  ${FONTS.H3};
+  overflow: hidden;
 
   width: calc(100% - 1.6rem);
+  margin: 9.4rem 0 0 1.6rem;
+
   text-align: left;
   white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+
+  ${FONTS.H3};
 `;
 
 const addressCss = css`

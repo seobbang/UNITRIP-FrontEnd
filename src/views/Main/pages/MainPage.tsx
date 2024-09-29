@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import getUserData from '@/apis/supabase/getUserData';
 import MenuBar from '@/components/MenuBar';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
 import { UserDataResponse } from '@/types/userAPI';
 
@@ -12,22 +13,17 @@ import RecommendedTravel from '../components/RecommendedTravel';
 
 const MainPage = () => {
   const [userData, setUserData] = useState<UserDataResponse | null>(null);
-
   const isLoggedIn = sessionStorage.getItem('kakao_id');
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!isLoggedIn) return;
+  useAsyncEffect(async () => {
+    if (!isLoggedIn) return;
 
-      try {
-        const response = await getUserData(Number(isLoggedIn));
-        setUserData(response);
-      } catch (err) {
-        throw new Error('오류가 발생했습니다');
-      }
-    };
-
-    fetchData();
+    try {
+      const response = await getUserData(Number(isLoggedIn));
+      setUserData(response);
+    } catch (err) {
+      throw new Error('오류가 발생했습니다');
+    }
   }, [isLoggedIn]);
 
   return (
@@ -46,6 +42,7 @@ const MainPage = () => {
         <NearbyTravel
           isLoggedIn={Boolean(isLoggedIn)}
           region={userData?.region}
+          favoriteList={userData?.favorite_list}
         />
 
         <div css={graySpacing} />

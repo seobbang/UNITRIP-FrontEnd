@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { SearchMonoIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
-import { SearchResItem } from '@/types/search';
+import { SearchItem } from '@/types/search';
 
 interface RelatedWordListProps {
   searchWord: string;
-  relatedWordList: SearchResItem[];
+  relatedWordList: SearchItem[];
   handleSearchInputValue: (value: string) => void;
 }
 

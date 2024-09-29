@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
-import { SearchResItem } from '@/types/search';
+import { SearchItem } from '@/types/search';
 
 import { useDebounceGetWordList } from '../../hooks/use-debounce-get-word-list';
 import RelatedWordList from './RelatedWordList';
@@ -16,7 +16,7 @@ const SearchBarContainer = (props: SearchBarContainerProps) => {
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  const [relatedWordList, setRelatedWordList] = useState<SearchResItem[]>([]);
+  const [relatedWordList, setRelatedWordList] = useState<SearchItem[]>([]);
 
   const debounceGetWordList = useDebounceGetWordList(setRelatedWordList);
 

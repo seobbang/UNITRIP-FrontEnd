@@ -7,7 +7,7 @@ import { SearchSetIcon } from '@/assets/icon';
 import MenuBar from '@/components/MenuBar';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { COLORS, FONTS } from '@/styles/constants';
-import { SearchResItem } from '@/types/search';
+import { SearchItem } from '@/types/search';
 import { isGuideShown } from '@/utils/storageHideGuide';
 
 import Guide from '../components/Result/Guide';
@@ -30,7 +30,7 @@ const SearchResultPage = () => {
   );
 
   // modal, bottom sheet state
-  const [placeList, setPlaceList] = useState<SearchResItem[]>([]);
+  const [placeList, setPlaceList] = useState<SearchItem[]>([]);
   const [showGuide, setShowGuide] = useState(() =>
     isGuideShown(STORAGE_KEY.hideSearchGuide),
   );

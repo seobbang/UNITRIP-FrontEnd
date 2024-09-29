@@ -1,4 +1,4 @@
-export interface SearchResItem {
+export interface SearchItem {
   cat2: string;
   cat3: string;
   tel: string;
@@ -19,21 +19,4 @@ export interface SearchResItem {
   contenttypeid: string;
   createdtime: string;
   firstimage: string;
-}
-
-export interface SearchWord {
-  header: {
-    resultCode: string;
-    resultMsg: string;
-  };
-  body: {
-    numOfRows: number;
-    pageNo: number;
-    totalCount: number;
-    items:
-      | {
-          item: SearchResItem[];
-        }
-      | '';
-  };
 }

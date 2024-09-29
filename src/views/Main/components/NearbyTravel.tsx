@@ -2,19 +2,25 @@ import { css } from '@emotion/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { getPlaceBasedArea } from '@/apis/public/main';
 import LoginModal from '@/components/LoginModal';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
+import { PlaceBasedAreaItem } from '@/types/main';
 
 import { cardContainer, scrollContainer } from '../styles/main';
 import TravelCard from './TravelCard';
 
 interface NearbyTravelProps {
   isLoggedIn: boolean;
-  region?: string; // prop 타입 수정
+  region?: string;
+  favoriteList?: number[];
 }
 
-const NearbyTravel = ({ isLoggedIn, region }: NearbyTravelProps) => {
+const NearbyTravel = (props: NearbyTravelProps) => {
+  const { isLoggedIn, region, favoriteList } = props;
   const [activateModal, setActivateModal] = useState(false);
+  const [placeList, setPlaceList] = useState<PlaceBasedAreaItem[]>([]);
 
   const closeModal = () => {
     setActivateModal(false);
@@ -24,33 +30,39 @@ const NearbyTravel = ({ isLoggedIn, region }: NearbyTravelProps) => {
     setActivateModal(true);
   };
 
+  useAsyncEffect(async () => {
+    if (!region) return;
+    const placeList = await getPlaceBasedArea({
+      region: region || '서울',
+    });
+    setPlaceList(placeList === '' ? [] : placeList.item);
+  }, [region]);
+
   return (
     <section css={container}>
-      <h2 css={title}>{isLoggedIn && region} 주변 갈 만한 여행지 🗺️</h2>
+      <h2 css={title}>
+        {isLoggedIn && (region || '서울')} 주변 갈 만한 여행지 🗺️
+      </h2>
       {isLoggedIn ? (
         <>
           <div css={scrollContainer}>
-            <li css={cardContainer}>
-              <TravelCard
-                name="대전 오월드"
-                address="대전 중구 사정공원로 70"
-              />
-              <TravelCard
-                name="대전 오월드"
-                address="대전 중구 사정공원로 70"
-              />
-              <TravelCard
-                name="대전 오월드"
-                address="대전 중구 사정공원로 70"
-              />
-              <TravelCard
-                name="대전 오월드"
-                address="대전 중구 사정공원로 70"
-              />
-            </li>
+            <ul css={cardContainer}>
+              {placeList.map(
+                ({ title, addr1, addr2, contentid, firstimage }) => (
+                  <TravelCard
+                    key={contentid}
+                    contentid={contentid}
+                    name={title}
+                    address={`${addr1} ${addr2}`}
+                    imgUrl={firstimage}
+                    isHeart={!!favoriteList?.includes(Number(contentid))}
+                  />
+                ),
+              )}
+            </ul>
           </div>
-          <Link to="" css={link}>
-            {region} 여행지 둘러보기
+          <Link to="/map" css={link}>
+            {region || '서울'} 여행지 둘러보기
           </Link>
         </>
       ) : (

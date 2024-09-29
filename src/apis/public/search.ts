@@ -1,7 +1,7 @@
 // 검색 관련 공공 데이터 API
 
 import { Response } from '@/types/public';
-import { SearchWord } from '@/types/search';
+import { SearchItem } from '@/types/search';
 
 import { publicDataClient } from '..';
 
@@ -26,7 +26,7 @@ export const getSearchKeyword = async (paramsInfo: searchKeywordParams) => {
         body: { items },
       },
     },
-  } = await publicDataClient.get<Response<SearchWord>>(
+  } = await publicDataClient.get<Response<SearchItem[]>>(
     `/searchKeyword1?${params}`,
   );
   return items;

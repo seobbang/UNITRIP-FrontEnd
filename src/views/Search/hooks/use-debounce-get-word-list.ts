@@ -2,10 +2,10 @@ import { debounce } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 
 import { getSearchKeyword } from '@/apis/public/search';
-import { SearchResItem } from '@/types/search';
+import { SearchItem } from '@/types/search';
 
 export const useDebounceGetWordList = (
-  setRelatedWordList: Dispatch<SetStateAction<SearchResItem[]>>,
+  setRelatedWordList: Dispatch<SetStateAction<SearchItem[]>>,
 ) =>
   debounce(async (searchWord: string) => {
     const wordList = await getSearchKeyword({
