@@ -5,17 +5,19 @@ import { COLORS, FONTS } from '@/styles/constants';
 
 interface ReviewCardProps {
   name: string;
-  score: string;
+  score: number;
+  thumbnail: string;
   content: string;
-  reviewCount: string;
+  reviewCount: number;
 }
 
 const ReviewCard = (props: ReviewCardProps) => {
-  const { name, score, content, reviewCount } = props;
+  const { name, score, thumbnail, content, reviewCount } = props;
+
   return (
     <ul css={card}>
       <div css={imgContainerCss}>
-        <img css={placeImg} src="" alt={`${name} 장소 사진`} />
+        <img css={placeImg} src={thumbnail} alt={`${name} 장소 사진`} />
         <div css={placeName}>
           <ShieldCheckMonoIcon />
           <p css={placeNameCss}>{name}</p>
@@ -25,7 +27,7 @@ const ReviewCard = (props: ReviewCardProps) => {
       <div css={reviewBox}>
         <p css={scoreText}>
           <Star1Icon />
-          {score}
+          {score.toFixed(1)}
         </p>
         <p css={contentText}>{content}</p>
         <p css={reviewCountText}>리뷰 {reviewCount}</p>
@@ -48,7 +50,7 @@ const card = css`
   display: flex;
   flex-direction: column;
 
-  width: 27.8rem;
+  width: 24rem;
   height: 30rem;
   border-radius: 1.2rem;
 
@@ -69,8 +71,8 @@ const placeName = css`
   gap: 0.4rem;
   align-items: center;
   position: absolute;
-  top: 12.2rem;
-  left: 1.6rem;
+  top: 12.5rem;
+  left: 1.2rem;
 
   padding: 0.4rem 0.8rem;
   border-radius: 1rem;
@@ -85,6 +87,8 @@ const reviewBox = css`
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  width: 100%;
 `;
 
 const scoreText = css`
@@ -101,8 +105,9 @@ const contentText = css`
   display: -webkit-box;
   overflow: hidden;
 
-  width: 23.8rem;
-  margin-top: 1rem;
+  width: 24rem;
+  padding: 0 2rem;
+  margin: 1rem 0;
 
   color: ${COLORS.gray7};
 
@@ -113,8 +118,6 @@ const contentText = css`
 `;
 
 const reviewCountText = css`
-  margin-top: 0.6rem;
-
   color: ${COLORS.gray4};
   ${FONTS.Small1};
 `;

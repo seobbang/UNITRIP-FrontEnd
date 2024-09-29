@@ -1,38 +1,48 @@
 import { css } from '@emotion/react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
+import getDummyData from '@/apis/supabase/getDummyData';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
+import { MainDummyResponse } from '@/types/api/dummy';
 
 import { cardContainer, scrollContainer } from '../styles/main';
 import ReviewCard from './ReviewCard';
 
 const RecommendedTravel = () => {
+  const [placeData, setPlaceData] = useState<MainDummyResponse[]>();
+
+  useAsyncEffect(async () => {
+    const response = await getDummyData();
+    setPlaceData(response);
+  }, []);
+
   return (
     <section css={sectionCss}>
       <h3 css={subTitle}>믿고 보는 유니트립 리뷰</h3>
       <h2 css={title}>유니트립 추천 여행지 🏖️</h2>
-
-      <div css={scrollContainer}>
-        <li css={cardContainer}>
-          <ReviewCard
-            name="대전 오월드"
-            score="4.9"
-            content="앱에서 보았던 것과 같이 작품마다 점자안내판으로 설명이 있어 시각장애인도 불편하지 않게 관람이 가능했어요. 오디오 가이드 대여 서비스도 제공하니 필요하신 분들은 꼭 대여해서 쓰세요!! 시설이 너무... "
-            reviewCount="391"
-          />
-          <ReviewCard
-            name="대전 오월드"
-            score="4.9"
-            content="앱에서 보았던 것과 같이 작품마다 점자안내판으로 설명이 있어 시각장애인도 불편하지 않게 관람이 가능했어요. 오디오 가이드 대여 서비스도 제공하니 필요하신 분들은 꼭 대여해서 쓰세요!! 시설이 너무... "
-            reviewCount="391"
-          />
-          <ReviewCard
-            name="대전 오월드"
-            score="4.9"
-            content="앱에서 보았던 것과 같이 작품마다 점자안내판으로 설명이 있어 시각장애인도 불편하지 않게 관람이 가능했어요. 오디오 가이드 대여 서비스도 제공하니 필요하신 분들은 꼭 대여해서 쓰세요!! 시설이 너무... "
-            reviewCount="391"
-          />
-        </li>
-      </div>
+      {placeData && (
+        <div css={scrollContainer}>
+          <ul css={cardContainer}>
+            {placeData.map((place) => {
+              return (
+                <li key={place.contentId + place.place}>
+                  <Link to={`/${place.contentId}`}>
+                    <ReviewCard
+                      name={place.place}
+                      thumbnail={place.thumbnail}
+                      score={place.rating}
+                      content={place.overview}
+                      reviewCount={place.review_count}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </section>
   );
 };
@@ -50,6 +60,7 @@ const subTitle = css`
   color: ${COLORS.gray7};
   ${FONTS.Body2};
 `;
+
 const title = css`
   margin-left: 2rem;
 
