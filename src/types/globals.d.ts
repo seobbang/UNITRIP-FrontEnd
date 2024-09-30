@@ -9,6 +9,7 @@ declare global {
         setAccessToken(
           token: string,
         ): Promise<ShippingAddressResponse | ShippingAddressError>;
+        logout(): Promise<LogoutResponse | AuthError>;
       };
       API: {
         request: (settings: {

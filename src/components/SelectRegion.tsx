@@ -33,13 +33,22 @@ const SelectRegion = ({ region, setRegion }: SelectRegionProps) => {
           return { city: prev.city, town: false };
         });
     };
-
     document.addEventListener('mouseup', handleFocus);
 
     return () => {
       document.removeEventListener('mouseup', handleFocus);
     };
   }, []);
+
+  const fetchRegionData = () => {
+    const town =
+      REGION_LIST.find((item) => item.city === region.city)?.town || [];
+    setLocationList(town);
+  };
+
+  useEffect(() => {
+    fetchRegionData();
+  }, [region.city]);
 
   const onClickDropDown = (inputType: 'city' | 'town', regionName: string) => {
     if (inputType === 'city') {
@@ -49,10 +58,6 @@ const SelectRegion = ({ region, setRegion }: SelectRegionProps) => {
           town: '',
         };
       });
-
-      const town =
-        REGION_LIST.find((item) => item.city === regionName)?.town || [];
-      setLocationList(town);
     } else if (inputType === 'town') {
       setRegion((prev) => {
         return {

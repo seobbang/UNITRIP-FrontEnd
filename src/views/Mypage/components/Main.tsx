@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 import { ArrowRightIcon } from '@/assets/icon';
 import { ProfileImg } from '@/assets/image';
@@ -7,17 +8,31 @@ import { COLORS, FONTS } from '@/styles/constants';
 import { MYPAGE_TAB_CONTENTS } from '../constants/text';
 
 interface MainProps {
+  name: string;
+  profile?: string;
   handleSetCurrentTab: (clicked: string) => void;
 }
 
 function Main(props: MainProps) {
-  const { handleSetCurrentTab } = props;
+  const { name, profile, handleSetCurrentTab } = props;
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+    window.Kakao.Auth.logout();
+    sessionStorage.removeItem('kakao_id');
+    navigate(`/`);
+  };
 
   return (
     <div>
       <section css={profileSection}>
-        <img src={ProfileImg} alt="프로필이미지_사진" css={profileImage} />
-        <span css={InfoText}>서아람</span>
+        <img
+          src={profile || ProfileImg}
+          alt="프로필이미지_사진"
+          css={profileImage}
+        />
+        <span css={InfoText}>{name}</span>
       </section>
       <ul>
         {Object.entries(MYPAGE_TAB_CONTENTS).map(([key, name]) => (
@@ -30,7 +45,7 @@ function Main(props: MainProps) {
           </li>
         ))}
       </ul>
-      <button type="button" css={tabItem('logout')}>
+      <button type="button" css={tabItem('logout')} onClick={logout}>
         로그아웃
       </button>
     </div>
@@ -67,7 +82,7 @@ const tabItem = (variant: string) => css`
   align-items: center;
 
   width: 100%;
-  padding: 1.85rem 0;
+  padding: 1.85rem 2rem;
   border-bottom: 1px solid ${COLORS.gray0};
 
   color: ${COLORS.brand1};

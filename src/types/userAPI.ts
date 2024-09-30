@@ -1,5 +1,6 @@
 export interface UserDataResponse {
   name: string;
+  profile: string;
   region: string;
   universal_type: string[];
   favorite_list: number[];

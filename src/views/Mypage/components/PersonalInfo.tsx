@@ -1,11 +1,57 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
+import updateUserInfo from '@/apis/supabase/updateUserInfo';
+import BottomButton from '@/components/BottomButton';
 import SelectRegion, { Region } from '@/components/SelectRegion';
+import ToastMessage from '@/components/ToastMessage';
 import { COLORS, FONTS } from '@/styles/constants';
+import { UserDataResponse } from '@/types/userAPI';
 
-const PersonalInfo = () => {
-  const [region, setRegion] = useState<Region>({ city: '', town: '' });
+interface PersonalInfoProps {
+  name: string;
+  region: Region;
+  setUserData: React.Dispatch<React.SetStateAction<UserDataResponse>>;
+}
+
+const PersonalInfo = ({ name, region, setUserData }: PersonalInfoProps) => {
+  const [selectedRegion, setSelectedRegion] = useState<Region>({
+    city: region.city,
+    town: region.town,
+  });
+  const [toast, setToast] = useState(false);
+  const [warning, setWarning] = useState(false);
+
+  const saveFn = () => {
+    const fetchData = async () => {
+      try {
+        const status = await updateUserInfo(selectedRegion);
+
+        if (status === 204) {
+          setToast(true);
+          setUserData((prev) => {
+            return {
+              ...prev,
+              region: `${selectedRegion.city} ${selectedRegion.town}`,
+            };
+          });
+        }
+      } catch (e) {
+        throw new Error('오류가 발생했습니다');
+      }
+    };
+
+    if (!selectedRegion.city || !selectedRegion.town) {
+      setWarning(true);
+    } else {
+      if (
+        region.city !== selectedRegion.city ||
+        region.town !== selectedRegion.town
+      ) {
+        fetchData();
+      }
+    }
+  };
 
   return (
     <>
@@ -14,7 +60,7 @@ const PersonalInfo = () => {
           <li css={formItem}>
             <span css={title}>이름*</span>
 
-            <input type="text" css={input} value="이돌이" disabled />
+            <input type="text" css={input} value={name} disabled />
           </li>
 
           <li css={formItem}>
@@ -27,9 +73,19 @@ const PersonalInfo = () => {
             </div>
           </li>
 
-          <SelectRegion region={region} setRegion={setRegion} />
+          <SelectRegion region={selectedRegion} setRegion={setSelectedRegion} />
         </ul>
       </form>
+      {warning && (
+        <ToastMessage setToast={setToast}>항목을 모두 채워주세요.</ToastMessage>
+      )}
+      {toast && (
+        <ToastMessage setToast={setToast}>
+          변경 사항이 반영되었습니다.
+        </ToastMessage>
+      )}
+
+      <BottomButton text="저장" clickedFn={saveFn} />
     </>
   );
 };
@@ -44,6 +100,7 @@ const PersonalInfoContainter = css`
 
   width: 100%;
   height: calc(100dvh - 6.2rem);
+  padding: 0 2rem;
   overflow-y: hidden;
 `;
 
