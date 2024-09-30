@@ -19,4 +19,4 @@ export const useDebounceGetWordList = (
     if (typeof wordList === 'object') {
       setRelatedWordList(wordList.item);
     } else setRelatedWordList([]);
-  }, 600);
+  }, 200);

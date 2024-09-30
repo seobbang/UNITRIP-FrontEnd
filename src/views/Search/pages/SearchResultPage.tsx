@@ -2,12 +2,15 @@ import { css } from '@emotion/react';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { getSearchKeyword } from '@/apis/public/search';
+import { getBarrierFreeInfo, getSearchKeyword } from '@/apis/public/search';
+import getUserData from '@/apis/supabase/getUserData';
 import { SearchSetIcon } from '@/assets/icon';
 import MenuBar from '@/components/MenuBar';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { COLORS, FONTS } from '@/styles/constants';
-import { SearchItem } from '@/types/search';
+import { BarrierFreeItem, SearchItem } from '@/types/search';
+import { UserDataResponse } from '@/types/userAPI';
 import { isGuideShown } from '@/utils/storageHideGuide';
 
 import Guide from '../components/Result/Guide';
@@ -16,21 +19,25 @@ import FilterBottomSheet from '../components/Search/FilterBottomSheet';
 import SearchBarContainer from '../components/SearchBar/SearchBarContainer';
 import {
   createInitialFilterState,
+  INITIAL_FILTER_STATE,
   MAP_CATEGORY_FACILITIES,
 } from '../constants/category';
 import { STORAGE_KEY } from '../constants/localStorageKey';
-import { category } from '../types/category';
+import { category, filterState } from '../types/category';
 
 const SearchResultPage = () => {
   const { word: initialWord } = useParams();
 
   const { pathname } = useLocation();
-  const [filterState, setFilterState] = useState(() =>
-    createInitialFilterState('physical'),
+  const [userData, setUserData] = useState<UserDataResponse | null>(null);
+  const [placeData, setPlaceData] = useState<(SearchItem & BarrierFreeItem)[]>(
+    [],
   );
 
+  const [filterState, setFilterState] =
+    useState<filterState>(INITIAL_FILTER_STATE);
+
   // modal, bottom sheet state
-  const [placeList, setPlaceList] = useState<SearchItem[]>([]);
   const [showGuide, setShowGuide] = useState(() =>
     isGuideShown(STORAGE_KEY.hideSearchGuide),
   );
@@ -40,8 +47,17 @@ const SearchResultPage = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setPlaceList([]);
+    setPlaceData([]);
   }, [pathname]);
+
+  useAsyncEffect(async () => {
+    const kakaoId = sessionStorage.getItem('kakao_id');
+    if (!kakaoId) return;
+
+    const userData = await getUserData(Number(kakaoId));
+    setUserData(userData);
+    setFilterState(createInitialFilterState(userData?.universal_type || []));
+  }, []);
 
   // 무한스크롤
   const options = {
@@ -61,17 +77,36 @@ const SearchResultPage = () => {
     try {
       const items = await getSearchKeyword({
         pageNo,
-        numOfRows: 10,
+        numOfRows: 50,
         MobileOS: 'ETC',
         keyword: pathname.split('/')[2],
         contentTypeId: 12,
       });
 
       if (items === '') {
-        if (pageNo === 0) setPlaceList([]);
+        if (pageNo === 0) setPlaceData([]);
         target.current && observer.unobserve(target.current);
       } else {
-        setPlaceList((prev) => [...prev, ...items.item]);
+        const placeData: (SearchItem & BarrierFreeItem)[] = [];
+        const promises = items.item.map(({ contentid }) =>
+          getBarrierFreeInfo({
+            MobileOS: 'ETC',
+            contentId: Number(contentid),
+          }),
+        );
+        const promiseResult = await Promise.allSettled(promises);
+        promiseResult.forEach((result) => {
+          if (result.status === 'fulfilled' && result.value !== '') {
+            const item = result.value.item;
+            const targetPlace = items.item.find(
+              ({ contentid }) => contentid === item[0].contentid,
+            );
+            if (!targetPlace) return;
+            placeData.push({ ...targetPlace, ...result.value.item[0] });
+          }
+        });
+
+        setPlaceData((prev) => [...prev, ...placeData]);
         page.current++;
       }
     } finally {
@@ -98,16 +133,8 @@ const SearchResultPage = () => {
     setIsFilterOpen(false);
   };
 
-  const handleFilterState = (category: category, facility: string) => {
-    const categoryFacilities = filterState[category];
-
-    setFilterState((prev) => ({
-      ...prev,
-      [category]: {
-        ...categoryFacilities,
-        [facility]: !categoryFacilities[facility],
-      },
-    }));
+  const handleFilterState = (value: filterState) => {
+    setFilterState({ ...value });
   };
 
   // render
@@ -130,9 +157,11 @@ const SearchResultPage = () => {
           {selectedCategory()}
         </button>
         <SearchResult
-          placeList={placeList}
+          placeData={placeData}
           targetElement={targetElement}
           loading={loading}
+          filterState={filterState}
+          heartList={userData?.favorite_list || []}
         />
       </SearchBarContainer>
 

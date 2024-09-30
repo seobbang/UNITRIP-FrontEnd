@@ -65,25 +65,24 @@ const containerCss = css`
 
 const selectedCategoryContainerCss = css`
   display: flex;
-  align-items: center;
   gap: 2rem;
+  align-items: center;
+  overflow: auto;
 
   padding: 0 0 0.94rem 1.9rem;
-
-  overflow: auto;
 `;
 
 const buttonCss = css`
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
   width: 100%;
-
   padding: 1.2rem 0;
 
-  color: ${COLORS.brand1};
   background-color: ${COLORS.gray0};
+
+  color: ${COLORS.brand1};
   ${FONTS.Body1}
 `;
 
@@ -97,6 +96,5 @@ const categoryNameCss = css`
 const facilitiesContainerCss = css`
   display: flex;
   gap: 1rem;
-
   overflow: auto;
 `;

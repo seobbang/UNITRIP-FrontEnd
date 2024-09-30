@@ -8,6 +8,7 @@ interface BottomSheetProps {
   closeBottomSheet: () => void;
   height: string;
 
+  onClickButton?: () => void;
   buttonText?: string;
   noButton?: boolean;
   bottomSheetCss?: SerializedStyles;
@@ -21,6 +22,7 @@ interface BottomSheetProps {
  * @param buttonText button text
  * @param noButton button 여부
  * @param bottomSheetCss 바텀시트 css 오버라이딩
+ * @param onClickButton 아래 버튼 클릭 함수
  * @param sheetBackgroundCss 바텀시트 배경 css 오버라이딩
  */
 const BottomSheet = (props: BottomSheetProps) => {
@@ -32,6 +34,7 @@ const BottomSheet = (props: BottomSheetProps) => {
     bottomSheetCss,
     sheetBackgroundCss,
     children,
+    onClickButton,
   } = props;
 
   document.body.style.overflow = 'hidden';
@@ -62,6 +65,7 @@ const BottomSheet = (props: BottomSheetProps) => {
           <div
             css={buttonCotainerCss}
             onClick={() => {
+              onClickButton && onClickButton();
               closeBottomSheet();
               document.body.style.overflow = '';
             }}>

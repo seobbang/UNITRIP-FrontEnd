@@ -58,10 +58,10 @@ const categoryTitleCss = css`
   align-items: center;
 
   width: 100%;
+  margin: 1.2rem 0;
 
   color: ${COLORS.brand1};
   ${FONTS.H5};
-  margin: 1.2rem 0;
 `;
 
 const iconListContainerCss = css`
@@ -74,10 +74,9 @@ const iconListContainerCss = css`
 
 const iconListCss = css`
   display: flex;
-  flex-direction: column;
   gap: 0.4rem;
-
   align-items: center;
+  flex-direction: column;
 
   color: ${COLORS.brand1};
   ${FONTS.Small2};

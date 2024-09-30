@@ -40,11 +40,10 @@ const fadeout = keyframes`
 
 const rootContainer = css`
   position: fixed;
-  left: 0;
   bottom: 7.5rem;
+  left: 0;
 
   width: 100%;
-
   padding: 0 2rem;
 `;
 

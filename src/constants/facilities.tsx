@@ -88,6 +88,7 @@ import {
   WheelChairInAcitveIcon,
   WheelChairSelectedIcon,
 } from '@/assets/icon';
+import { BarrierFreeItem } from '@/types/search';
 
 export interface Facility {
   name: string;
@@ -262,3 +263,28 @@ export const INFANT_FACILITIES: Facility[] = [
     selected: <BabySpareChairSelectedIcon />,
   },
 ];
+
+export const MAP_FACILITIES_API_KEY: Record<string, keyof BarrierFreeItem> = {
+  휠체어: 'wheelchair',
+  출입통로: 'exit',
+  엘리베이터: 'elevator',
+  화장실: 'restroom',
+  '수화 안내': 'signguide',
+  '유도·안내': 'guidesystem',
+  자막: 'videoguide',
+  유모차: 'stroller',
+  수유실: 'lactationroom',
+  '유아용 의자': 'babysparechair',
+  관람석: 'auditorium',
+  '점형/선형 블록': 'braileblock',
+  안내견: 'helpdog',
+  '안내 요원': 'guidehuman',
+  오디오가이드: 'audioguide',
+  '큰 활자': 'bigprint',
+  '점자 표지판': 'brailepromotion',
+  주차장: 'parking',
+  대중교통: 'route',
+  접근로: 'publictransport',
+  매표소: 'ticketoffice',
+  홍보물: 'promotion',
+};

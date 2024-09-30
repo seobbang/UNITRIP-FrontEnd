@@ -1,25 +1,46 @@
 import { css } from '@emotion/react';
-import { MutableRefObject } from 'react';
+import { MutableRefObject, useEffect, useRef, useState } from 'react';
 
 import { BigInfoIcon } from '@/assets/icon';
 import PlaceCard from '@/components/PlaceCard';
+import { MAP_FACILITIES_API_KEY } from '@/constants/facilities';
 import { COLORS, FONTS } from '@/styles/constants';
-import { SearchItem } from '@/types/search';
+import { BarrierFreeItem, SearchItem } from '@/types/search';
+
+import { getFilterList } from '../../constants/category';
+import { filterState } from '../../types/category';
 
 interface SearchResultProps {
-  placeList: SearchItem[];
+  placeData: (SearchItem & BarrierFreeItem)[];
   targetElement: MutableRefObject<HTMLDivElement | null>;
   loading: boolean;
+  filterState: filterState;
+  heartList: number[];
 }
 
 const SearchResult = (props: SearchResultProps) => {
-  const { placeList, targetElement, loading } = props;
+  const { placeData, targetElement, loading, filterState, heartList } = props;
+  const placeListRef = useRef<HTMLUListElement>(null);
   console.log(loading);
 
-  const renderPlaceList = () => {
-    if (placeList.length === 0) {
-      return (
-        <>
+  const [renderPlaceList, setRenderPlaceList] = useState<
+    (SearchItem & BarrierFreeItem)[]
+  >([]);
+
+  useEffect(() => {
+    const filterList = getFilterList(filterState);
+    const renderPlaceList = placeData.filter((placeInfo) => {
+      return filterList.every(
+        (facility) => placeInfo[MAP_FACILITIES_API_KEY[facility]] !== '',
+      );
+    });
+    setRenderPlaceList(renderPlaceList);
+  }, [filterState, placeData]);
+
+  return (
+    <>
+      <ul css={containerCss(placeData.length)} ref={placeListRef}>
+        {renderPlaceList.length === 0 ? (
           <div css={noResultContainerCss}>
             <BigInfoIcon />
             <div css={noResultTitleCss}>검색 결과가 없어요</div>
@@ -29,48 +50,25 @@ const SearchResult = (props: SearchResultProps) => {
               다른 여행지를 검색해보세요!
             </p>
           </div>
-        </>
-      );
-    } else {
-      return placeList.map(
-        ({ contentid, title, addr1, addr2, firstimage, firstimage2 }) => {
-          return (
-            <li key={contentid}>
-              <PlaceCard
-                placeName={title}
-                address={addr1 + addr2}
-                imgSrc={firstimage || firstimage2 || ''}
-                onClickHeart={() => {}}
-              />
-            </li>
-          );
-        },
-      );
-    }
-  };
-
-  return (
-    <>
-      <ul css={containerCss(placeList.length)}>
-        {renderPlaceList()}
-        <div ref={targetElement} css={lastTargetCss} />
-
-        {placeList.length >= 10 && (
-          <>
-            <li>
-              <PlaceCard placeName={''} address={''} imgSrc={''} />
-            </li>
-            <li>
-              <PlaceCard placeName={''} address={''} imgSrc={''} />
-            </li>
-            <li>
-              <PlaceCard placeName={''} address={''} imgSrc={''} />
-            </li>
-            <li>
-              <PlaceCard placeName={''} address={''} imgSrc={''} />
-            </li>
-          </>
+        ) : (
+          renderPlaceList.map(
+            ({ contentid, title, addr1, addr2, firstimage, firstimage2 }) => {
+              return (
+                <li key={contentid}>
+                  <PlaceCard
+                    contentid={contentid}
+                    placeName={title}
+                    address={addr1 + addr2}
+                    imgSrc={firstimage || firstimage2 || ''}
+                    isHeart={heartList.includes(Number(contentid))}
+                    buttonDisabled
+                  />
+                </li>
+              );
+            },
+          )
         )}
+        <div ref={targetElement} css={lastTargetCss} />
       </ul>
     </>
   );
@@ -84,9 +82,9 @@ const containerCss = (placeLength: number) => css`
   flex-direction: column;
 
   height: ${placeLength > 0 ? 'calc(100vh - 11rem)' : 'fit-content'};
-  overflow-y: scroll;
-
   padding: 1.6rem 2rem 0;
+  padding-bottom: 7rem;
+  overflow-y: scroll;
 `;
 
 const lastTargetCss = css`
