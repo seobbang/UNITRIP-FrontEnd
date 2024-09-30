@@ -76,7 +76,10 @@ const BottomSheet = (props: BottomSheetProps) => {
     </div>
   );
 
-  return createPortal(portalContent, document.body);
+  return createPortal(
+    portalContent,
+    document.getElementById('root') as HTMLElement,
+  );
 };
 
 export default BottomSheet;
@@ -87,11 +90,11 @@ const backgroundCss = css`
   align-items: center;
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 999;
 
   width: 100vw;
   height: 100vh;
+  margin: 0 auto;
 
   background-color: rgb(0 0 0 / 30%);
 `;
@@ -109,7 +112,7 @@ const containerCss = (height: string) => css`
 `;
 
 const buttonCotainerCss = css`
-  position: fixed;
+  position: absolute;
   bottom: 1.2rem;
   left: 0;
 

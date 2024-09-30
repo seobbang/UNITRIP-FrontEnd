@@ -100,7 +100,6 @@ const backgroundCss = css`
   background: linear-gradient(
     180deg,
     rgb(0 0 0 / 0%) 0%,
-    rgb(0 0 0 / 34%) 100% rgb(0 0 0 / 0%) 0%,
     rgb(0 0 0 / 34%) 100%
   );
 

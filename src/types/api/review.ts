@@ -1,7 +1,13 @@
 export interface ReviewResponse {
-  writer: string;
+  id: number;
+  place: number;
+  writer: number;
   rate: number;
   description: string;
   convenience: string[];
-  imgUrl: string[];
+  imgUrls: string[];
+  date: string;
+  USER: {
+    name: string;
+  };
 }

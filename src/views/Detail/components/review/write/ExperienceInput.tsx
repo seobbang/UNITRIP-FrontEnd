@@ -32,20 +32,21 @@ export default ExperienceInput;
 const textAreaCss = css`
   width: 100%;
   height: 12rem;
-
   padding: 1.6rem;
   margin-top: 1.6rem;
-
-  border-radius: 1rem;
   border: 1px solid ${COLORS.gray3};
+  border-radius: 1rem;
+  resize: none;
+
+  ${FONTS.Body2};
 
   &:focus {
     outline: none;
+
     border: 1px solid ${COLORS.brand1};
   }
 
   &::placeholder {
     color: ${COLORS.gray4};
   }
-  ${FONTS.Body2};
 `;

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 
-import { StarIcon } from '@/assets/icon';
+import { StarGrayIcon, StarIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 import { ReviewResponse } from '@/types/api/review';
 
@@ -16,8 +16,12 @@ const TotalScore = (props: TotalScoreProps) => {
 
   const renderStar = () => {
     const starEl = [];
-    for (let i = 0; i < Math.floor(averageScore); i++) {
+    const fillStarCount = Math.floor(averageScore);
+    for (let i = 0; i < fillStarCount; i++) {
       starEl.push(<StarIcon key={i} />);
+    }
+    for (let i = 0; i < 5 - fillStarCount; i++) {
+      starEl.push(<StarGrayIcon key={5 - i} />);
     }
     return starEl;
   };

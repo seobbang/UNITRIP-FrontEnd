@@ -24,6 +24,7 @@ const postAddUser = async ({
         profile: thumbnail_image_url,
         universal_type: travelerType,
         region: `${region.city} ${region.town}`,
+        favorite_list: [],
       },
     ])
     .select();

@@ -3,25 +3,23 @@ import { useEffect, useRef, useState } from 'react';
 
 import { SmallStarIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
+import { ReviewResponse } from '@/types/api/review';
 
-interface ReviewCardProps {
-  writer: string;
-  rate: number;
-  description: string;
-  convenience: string[];
-  imgUrl: string[];
-}
-
-const ReviewCard = (props: ReviewCardProps) => {
-  const { writer, rate, description, convenience, imgUrl } = props;
+const ReviewCard = (props: ReviewResponse) => {
+  const {
+    rate,
+    description,
+    convenience,
+    imgUrls,
+    USER: { name },
+    date,
+  } = props;
 
   const [showAll, setShowAll] = useState(false);
   const [isMoreButton, setIsMoreButton] = useState(false);
 
   const descriptionRef = useRef<HTMLDivElement>(null);
 
-  // 5.25rem
-  // 63
   useEffect(() => {
     if (
       descriptionRef.current &&
@@ -36,7 +34,9 @@ const ReviewCard = (props: ReviewCardProps) => {
     <li css={containerCss}>
       <div css={contentContainerCss}>
         <div css={headerCss}>
-          <span css={authorCss}>{writer}</span>
+          <span css={authorCss}>
+            {name[0] + '*' + (name.substring(2) || '')}
+          </span>
           <div css={startContainerCss}>
             <SmallStarIcon /> {rate}
           </div>
@@ -47,7 +47,7 @@ const ReviewCard = (props: ReviewCardProps) => {
           {description}
           {isMoreButton && !showAll && (
             <div css={moreContentCss}>
-              <div>...</div>{' '}
+              <div>...</div>
               <button
                 css={moreContentButtonCss}
                 onClick={() => setShowAll(true)}>
@@ -59,17 +59,21 @@ const ReviewCard = (props: ReviewCardProps) => {
       </div>
 
       <div css={imgContainerCss}>
-        {imgUrl.map((imgUrl) => (
-          <img key={imgUrl} src={imgUrl} />
+        {imgUrls.map((imgUrls) => (
+          <img key={imgUrls} src={imgUrls} css={imgCss} />
         ))}
       </div>
 
-      <div css={dateCss}>2024.07.28</div>
+      <div css={dateCss}>{date}</div>
     </li>
   );
 };
 
 export default ReviewCard;
+
+const imgCss = css`
+  object-fit: cover;
+`;
 
 const containerCss = css`
   padding-bottom: 2rem;

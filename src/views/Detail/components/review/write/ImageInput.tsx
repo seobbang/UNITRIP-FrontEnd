@@ -1,22 +1,35 @@
 import { css } from '@emotion/react';
 
-import { CameraIcon, ToggleXFillIcon } from '@/assets/icon';
+import { CameraIcon } from '@/assets/icon';
 import { COLORS } from '@/styles/constants';
 
 import Description from './Description';
+import Image from './Image';
 import Question from './Question';
 
 interface ImageInputProps {
-  imgList: string[];
-  addImg: (imgUrl: string) => void;
+  imgList: File[];
+  addImg: (file: File) => void;
   removeImg: (imgUrl: string) => void;
 }
 
 const ImageInput = (props: ImageInputProps) => {
   const { imgList, addImg, removeImg } = props;
 
-  const handleOnChange = () => {
-    addImg('asdf');
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      const timestamp = +new Date();
+      const newFile = new File(
+        [file],
+        `${encodeURIComponent(file.name)}${timestamp}`,
+        {
+          type: file.type,
+        },
+      );
+      addImg(newFile);
+      e.target.value = '';
+    }
   };
 
   return (
@@ -24,14 +37,19 @@ const ImageInput = (props: ImageInputProps) => {
       <Question>사진으로 생생한 경험을 공유해주세요!</Question>
       <Description>최대 10장까지 사진을 올릴 수 있어요</Description>
       <div css={imgContainerCss}>
-        {imgList.map((imgUrl) => (
-          <div key={imgUrl} css={imgBoxContainerCss}>
-            <img src={imgUrl} css={imgCss} />
-            <button onClick={() => removeImg(imgUrl)}>
-              <ToggleXFillIcon />
-            </button>
-          </div>
-        ))}
+        {imgList.map((imgFile) => {
+          return (
+            <Image
+              key={imgFile.name}
+              file={imgFile}
+              id={imgFile.name}
+              removeImg={() => {
+                removeImg(imgFile.name);
+              }}
+            />
+          );
+        })}
+
         {imgList.length < 10 && (
           <label css={imageSquareLabelCss}>
             <CameraIcon />
@@ -48,23 +66,23 @@ export default ImageInput;
 
 const imageSquareLabelCss = css`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   gap: 0.6rem;
-
-  aspect-ratio: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
   border-radius: 1.2rem;
 
   background-color: ${COLORS.gray1};
-  color: ${COLORS.gray6};
 
+  color: ${COLORS.gray6};
   font-family: 'Apple SD Gothic Neo', sans-serif;
   font-style: normal;
   font-size: 1.3rem;
   font-weight: 400;
   line-height: 140%;
+
+  aspect-ratio: 1;
 `;
 
 const imgContainerCss = css`
@@ -73,19 +91,7 @@ const imgContainerCss = css`
   grid-template-columns: repeat(3, 1fr);
 
   margin-top: 1.6rem;
-
   border-radius: 1.2rem;
-`;
-
-const imgBoxContainerCss = css`
-  position: relative;
-  aspect-ratio: 1;
-
-  & > button {
-    position: absolute;
-    top: 0.8rem;
-    right: 0.8rem;
-  }
 `;
 
 const imageButtonCss = css`
@@ -93,8 +99,4 @@ const imageButtonCss = css`
   height: 0;
   padding: 0;
   border: 0;
-`;
-
-const imgCss = css`
-  border-radius: 1.2rem;
 `;

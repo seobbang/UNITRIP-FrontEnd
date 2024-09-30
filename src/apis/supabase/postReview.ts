@@ -1,5 +1,3 @@
-import { useLocation } from 'react-router-dom';
-
 import { unitripSupabase } from '@/utils/supabaseClient';
 
 import postImgReview from './postImgReview';
@@ -9,6 +7,7 @@ interface postReviewProps {
   description: string;
   convenience: string[];
   imgs: File[];
+  contentId: number | undefined;
 }
 
 const postReview = async ({
@@ -16,31 +15,34 @@ const postReview = async ({
   description,
   convenience,
   imgs,
+  contentId,
 }: postReviewProps) => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const place = queryParams.get('contentId');
-
   const writer = sessionStorage.getItem('kakao_id');
 
-  const { error } = await unitripSupabase
+  const imgUrls = await postImgReview(imgs);
+
+  const date = new Date().toLocaleDateString().replace(/\s/g, '');
+
+  const { error, status } = await unitripSupabase
     .from('REVIEW')
     .insert([
       {
-        place,
+        place: contentId,
         writer,
         rate,
         description,
         convenience,
+        imgUrls,
+        date,
       },
     ])
     .select();
 
-  await postImgReview(imgs);
-
   if (error) {
     throw new Error('서버에 문제가 있습니다');
   }
+
+  return status;
 };
 
 export default postReview;

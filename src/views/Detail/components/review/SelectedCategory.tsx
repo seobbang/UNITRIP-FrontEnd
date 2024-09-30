@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 
 import { COLORS, FONTS } from '@/styles/constants';
+import { MAP_UNIVERSAL_TYPE } from '@/views/Search/constants/category';
 import { category, filterState } from '@/views/Search/types/category';
 
 import { categoryButtonCss } from '../../styles/review';
@@ -10,15 +11,20 @@ interface SelectedCategoryProps {
   openBottomSheet: () => void;
   filterState: filterState;
   handleFilterState: (category: category, facility: string) => void;
+  defaultCategory?: string[];
 }
 
 const SelectedCategory = (props: SelectedCategoryProps) => {
-  const { openBottomSheet, filterState, handleFilterState } = props;
+  const { openBottomSheet, filterState, handleFilterState, defaultCategory } =
+    props;
 
   const renderSelectedCategoryList = () => {
     const categoryList = Object.entries(filterState).filter(
-      ([, objectValue]) => {
-        return Object.values(objectValue).some((value) => value);
+      ([category, objectValue]) => {
+        return (
+          Object.values(objectValue).some((value) => value) ||
+          defaultCategory?.includes(MAP_UNIVERSAL_TYPE[category as category])
+        );
       },
     ) as [category, Record<string, boolean>][];
 

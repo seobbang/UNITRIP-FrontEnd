@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { BackgroundImage } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -10,8 +11,16 @@ import PlaceInfo from '../components/PlaceInfo';
 import Tab from '../components/Tab';
 
 function DetailPage() {
-  const [selectedTab, setSelectedTab] = useState('상세정보');
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { contentId } = useParams();
+
+  const [selectedTab, setSelectedTab] = useState(
+    pathname.endsWith('review') ? '리뷰' : '상세정보',
+  );
   const handleTabChange = (tab: string) => {
+    if (tab === '리뷰') navigate(`/${contentId}/review`);
+    else navigate(`/${contentId}`);
     setSelectedTab(tab);
   };
   return (

@@ -158,3 +158,4 @@ export { default as VideoGuideDefaultIcon } from './videoguide_default.svg?react
 export { default as VideoGuideSelectedIcon } from './videoguide_selected.svg?react';
 export { default as WheelChairDefaultIcon } from './wheelchair_default.svg?react';
 export { default as WheelChairSelectedIcon } from './wheelchair_selected.svg?react';
+export { default as StarGrayIcon } from './icon-star-gray.svg?react';

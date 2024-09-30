@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { PencilMonoIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -10,6 +10,7 @@ interface TotalReviewProps {
 
 const TotalReview = (props: TotalReviewProps) => {
   const { reviewCount } = props;
+  const { contentId } = useParams();
 
   return (
     <div css={containerCss}>
@@ -17,7 +18,7 @@ const TotalReview = (props: TotalReviewProps) => {
         <span>리뷰</span>
         <span>{reviewCount}</span>
       </div>
-      <Link to="review/write">
+      <Link to={`/${contentId}/review/write`}>
         <PencilMonoIcon />
       </Link>
     </div>

@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import postReview from '@/apis/supabase/postReview';
 import { ChevronLeftIcon } from '@/assets/icon';
 import ToastMessage from '@/components/ToastMessage';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -9,24 +10,27 @@ import {
   getFilterList,
   INITIAL_FILTER_STATE,
 } from '@/views/Search/constants/category';
-import { category } from '@/views/Search/types/category';
+import { filterState } from '@/views/Search/types/category';
 
 import CategoryBottomSheet from '../components/review/CategoryBottomSheet';
 import ExperienceInput from '../components/review/write/ExperienceInput';
 import Facilities from '../components/review/write/Facilities';
 import ImageInput from '../components/review/write/ImageInput';
 import ScoreSection from '../components/review/write/ScoreSection';
+import { STORAGE_KEY } from '../constants/localStorageKey';
 
 const WriteReviewPage = () => {
   const navigate = useNavigate();
+  const { contentId } = useParams();
 
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [toast, setToast] = useState(false);
+  const [errorToast, setErrorToast] = useState(false);
+  const [errorType, setErrorType] = useState<'score' | 'experience'>('score');
 
   const [score, setScore] = useState(0);
   const [experience, setExperience] = useState('');
   const [filterState, setFilterState] = useState(INITIAL_FILTER_STATE);
-  const [imgList, setImgList] = useState<string[]>([]);
+  const [imgList, setImgList] = useState<File[]>([]);
 
   const handleScore = (score: number) => {
     setScore(score);
@@ -44,36 +48,52 @@ const WriteReviewPage = () => {
     setExperience(value);
   };
 
-  const handleFilterState = (category: category, facility: string) => {
-    const categoryFacilities = filterState[category];
-
-    setFilterState((prev) => ({
-      ...prev,
-      [category]: {
-        ...categoryFacilities,
-        [facility]: !categoryFacilities[facility],
-      },
-    }));
+  const handleFilterState = (value: filterState) => {
+    setFilterState(value);
   };
 
-  const addImg = (imgUrl: string) => {
-    setImgList((prev) => [...prev, imgUrl]);
+  const addImg = (file: File) => {
+    setImgList((prev) => [...prev, file]);
   };
 
-  const removeImg = (imgUrl: string) => {
-    const filteredImgList = imgList.filter((item) => item !== imgUrl);
+  const removeImg = (name: string) => {
+    const filteredImgList = imgList.filter((item) => item.name !== name);
     setImgList(filteredImgList);
   };
 
-  const handleOnClick = () => {
-    console.log({
-      rate: score,
-      description: experience,
-      convenience: getFilterList(filterState),
-      imgUrl: imgList,
-    });
-    setToast(true);
+  const handleOnClick = async () => {
+    if (!score) {
+      setErrorType('score');
+      setErrorToast(true);
+      return;
+    }
+    if (experience.length < 10) {
+      setErrorType('experience');
+      setErrorToast(true);
+      return;
+    }
+
+    try {
+      const status = await postReview({
+        rate: score,
+        description: experience,
+        convenience: getFilterList(filterState),
+        imgs: imgList,
+        contentId: Number(contentId),
+      });
+
+      if (status === 201) {
+        sessionStorage.setItem(STORAGE_KEY.successToast, 'true');
+        navigate(`/${contentId}/review`);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -101,9 +121,11 @@ const WriteReviewPage = () => {
         <button css={submitCss} onClick={handleOnClick}>
           등록하기
         </button>
-        {toast && (
-          <ToastMessage setToast={setToast}>
-            리뷰가 저장되었습니다.
+        {errorToast && (
+          <ToastMessage setToast={setErrorToast}>
+            {errorType === 'score'
+              ? '별점을 남겨주세요'
+              : '느낀 점을 10자 이상 입력해주세요'}
           </ToastMessage>
         )}
         {isBottomSheetOpen && (
@@ -153,7 +175,7 @@ const writeContainerCss = css`
 const submitCss = css`
   width: 100%;
   height: 5.6rem;
-  margin: 7.2rem 0 0.5rem;
+  margin: 7.2rem 0 1.2rem;
   border-radius: 1.2rem;
 
   background-color: ${COLORS.brand1};

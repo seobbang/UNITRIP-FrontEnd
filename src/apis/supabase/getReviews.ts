@@ -1,16 +1,10 @@
-import { useLocation } from 'react-router-dom';
-
 import { unitripSupabase } from '@/utils/supabaseClient';
 
-const getReviews = async () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const place = queryParams.get('contentId');
-
+const getReviews = async (contentId: string) => {
   const { data, error } = await unitripSupabase
     .from('REVIEW')
     .select('*, USER(name)')
-    .eq('place', place);
+    .eq('place', contentId);
 
   if (error) {
     throw new Error('서버에 문제가 있습니다');
