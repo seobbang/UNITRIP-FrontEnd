@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Error from './components/Error';
 import Settings from './components/Settings';
-import Review from './views/Detail/components/Review';
 import DetailPage from './views/Detail/pages/DetailPage';
 import WriteReviewPage from './views/Detail/pages/WriteReviewPage';
 import ErrorReportPage from './views/ErrorReport/pages/ErrorReportPage';

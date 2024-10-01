@@ -16,8 +16,9 @@ export const getMapCenter = async (map: mapType | undefined) => {
       });
 
       return response;
-    } finally {
-      console.log('finish');
+    } catch (err) {
+      console.error('getMapCenter 에러 발생');
+      throw err;
     }
   }
 };

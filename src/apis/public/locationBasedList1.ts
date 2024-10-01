@@ -1,5 +1,5 @@
 /** 위치기반 관광정보 조회 API */
-import { getLocationBasedList1Res } from '@/types/locationBasedList1';
+import { locationBasedList1Res } from '@/types/locationBasedList1';
 import { Response } from '@/types/public';
 
 import { publicDataClient } from '..';
@@ -17,7 +17,7 @@ interface locationBasedList1Params {
 export const getLocationBasedList1 = async (
   paramsInfo: locationBasedList1Params,
 ) => {
-  let params = `MobileApp=UNITRIP&_type=json&arrange=O&serviceKey=${import.meta.env.VITE_PUBLIC_DATA_SERVICE_KEY}`;
+  let params = `MobileApp=UNITRIP&_type=json&arrange=S&serviceKey=${import.meta.env.VITE_PUBLIC_DATA_SERVICE_KEY}`;
 
   for (const [key, value] of Object.entries(paramsInfo)) {
     params += `&${key}=${value}`;
@@ -29,8 +29,9 @@ export const getLocationBasedList1 = async (
         body: { items },
       },
     },
-  } = await publicDataClient.get<Response<getLocationBasedList1Res>>(
+  } = await publicDataClient.get<Response<locationBasedList1Res[]>>(
     `/locationBasedList1?${params}`,
   );
+
   return items;
 };

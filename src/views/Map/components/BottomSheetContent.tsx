@@ -16,8 +16,15 @@ const BottomSheetContent = (props: contentProps) => {
   const { title, address, image, contentId } = props;
   const isImageNone = image === '';
 
+  // const navigate = useNavigate();
+
+  const onClickContent = () => {
+    console.log(contentId);
+    // navigate('/detail');
+  };
+
   return (
-    <div css={contentContainer} onClick={() => console.log(contentId)}>
+    <div css={contentContainer} onClick={onClickContent}>
       <section css={textSection}>
         <div css={titleSectionCss}>
           <h1 css={titleText('title')}>{title}</h1>
@@ -42,7 +49,6 @@ const contentContainer = css`
   justify-content: space-between;
 
   width: 100%;
-  padding: 4rem 1.7rem 10.5rem;
 `;
 
 const textSection = css`
@@ -50,6 +56,8 @@ const textSection = css`
   gap: 0.2rem;
   flex-direction: column;
   max-width: 22.9rem;
+
+  padding-top: 0.35rem;
 `;
 
 const titleSectionCss = css`

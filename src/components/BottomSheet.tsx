@@ -1,4 +1,4 @@
-import { css, SerializedStyles } from '@emotion/react';
+import { css, keyframes, SerializedStyles } from '@emotion/react';
 import { MouseEvent, ReactNode, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -84,12 +84,20 @@ const BottomSheet = (props: BottomSheetProps) => {
 
 export default BottomSheet;
 
+const slideUp = keyframes`
+  0% { transform: translateY(100%)}
+  100% { transform: translateY(0)}
+`;
+
 const backgroundCss = css`
   display: flex;
   justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
   z-index: 999;
 
   width: 100vw;
@@ -109,6 +117,8 @@ const containerCss = (height: string) => css`
   border-radius: 1.2rem 1.2rem 0 0;
 
   background-color: white;
+
+  animation: ${slideUp} 0.25s cubic-bezier(0.5, 0, 0.5, 0.7);
 `;
 
 const buttonCotainerCss = css`
