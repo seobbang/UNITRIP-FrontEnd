@@ -37,6 +37,7 @@ export { default as ToggleXIcon } from './toggle-x.svg?react';
 export { default as ArrowRightIcon } from './icon-arrow-right.svg?react';
 export { default as HeaderBackIcon } from './icon_header_back.svg?react';
 export { default as MypageHeartIcon } from './icon_mypage_heart.svg?react';
+export { default as ErrorIcon } from './error_icon.svg?react';
 
 export { default as CheckEmptyIcon } from './icon-check-empty.svg?react';
 export { default as CheckFilledYellowIcon } from './icon-check-fill-yellow.svg?react';

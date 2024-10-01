@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import Error from './components/Error';
 import Settings from './components/Settings';
 import Review from './views/Detail/components/Review';
 import DetailPage from './views/Detail/pages/DetailPage';
@@ -21,36 +22,16 @@ const router = createBrowserRouter([
       { path: '/auth/callback', element: <LoginCallBack /> },
       { path: '/detail', element: <DetailPage /> },
       { path: '/sign-up', element: <SignUpPage /> },
+      { path: '/detail', element: <DetailPage /> },
+      { path: '/detail/review/write', element: <WriteReviewPage /> },
+      { path: '/search', element: <SearchPage /> },
+      { path: '/search/:word', element: <SearchResultPage /> },
+      { path: '/mypage', element: <Mypage /> },
+      { path: '/error-report', element: <ErrorReportPage /> },
+      { path: '/map', element: <MapPage /> },
+      { path: '/error', element: <Error /> },
     ],
   },
-  {
-    path: '/:contentId',
-    element: <DetailPage />,
-    children: [{ path: 'review', element: <Review /> }],
-  },
-  { path: '/:contentId/review/write', element: <WriteReviewPage /> },
-  {
-    path: '/search',
-    element: <SearchPage />,
-    children: [{}],
-  },
-  {
-    path: '/search/:word',
-    element: <SearchResultPage />,
-  },
-  {
-    path: '/mypage',
-    element: <Mypage />,
-  },
-  { path: '/error-report', element: <ErrorReportPage /> },
-  {
-    path: '/map',
-    element: <MapPage />,
-  },
-  // {
-  //   path: "*",
-  //   element: <ErrorPage />,
-  // },
 ]);
 
 const Router = () => {

@@ -22,7 +22,7 @@ const MainPage = () => {
       const response = await getUserData(Number(isLoggedIn));
       setUserData(response);
     } catch (err) {
-      throw new Error('오류가 발생했습니다');
+      console.log(err);
     }
   }, [isLoggedIn]);
 
@@ -44,7 +44,6 @@ const MainPage = () => {
           region={userData?.region}
           favoriteList={userData?.favorite_list}
         />
-
         <div css={graySpacing} />
         <RecommendedTravel />
       </main>
