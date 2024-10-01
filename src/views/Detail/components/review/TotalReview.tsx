@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
-import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { PencilMonoIcon } from '@/assets/icon';
+import LoginModal from '@/components/LoginModal';
 import { COLORS, FONTS } from '@/styles/constants';
 
 interface TotalReviewProps {
@@ -11,17 +13,36 @@ interface TotalReviewProps {
 const TotalReview = (props: TotalReviewProps) => {
   const { reviewCount } = props;
   const { contentId } = useParams();
+  const navigate = useNavigate();
+  const [activateModal, setActivateModal] = useState(false);
+
+  const isLoggedIn = sessionStorage.getItem('kakao_id');
+
+  const writeReviewFn = () => {
+    if (isLoggedIn) {
+      navigate(`/${contentId}/review/write`);
+    } else {
+      setActivateModal(true);
+    }
+  };
+
+  const closeModal = () => {
+    setActivateModal(false);
+  };
 
   return (
-    <div css={containerCss}>
-      <div css={reviewCountCss}>
-        <span>리뷰</span>
-        <span>{reviewCount}</span>
+    <>
+      <div css={containerCss}>
+        <div css={reviewCountCss}>
+          <span>리뷰</span>
+          <span>{reviewCount}</span>
+        </div>
+        <button type="button" onClick={writeReviewFn}>
+          <PencilMonoIcon />
+        </button>
       </div>
-      <Link to={`/${contentId}/review/write`}>
-        <PencilMonoIcon />
-      </Link>
-    </div>
+      {activateModal && <LoginModal onClick={closeModal} />}
+    </>
   );
 };
 

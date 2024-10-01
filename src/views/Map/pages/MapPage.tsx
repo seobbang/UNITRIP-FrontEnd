@@ -8,6 +8,7 @@ import {
   MapSearchInactiveIcon,
   RefreshMonoIcon,
 } from '@/assets/icon';
+import LoginModal from '@/components/LoginModal';
 import MenuBar from '@/components/MenuBar';
 import { COLORS, FONTS } from '@/styles/constants';
 import { locationBasedList1Res } from '@/types/locationBasedList1';
@@ -45,6 +46,9 @@ const MapPage = () => {
   const [defaultLoc, setDefaultLoc] = useState<locType>(); // 사용자 지정 지역 좌표
 
   const [getLocActive, setGetLocActive] = useState(false); // 위치 허용에 따른 아이콘 변화
+  const [activateModal, setActivateModal] = useState(false);
+
+  const isLoggedIn = sessionStorage.getItem('kako_id');
 
   // 바텀시트 내용
   const [bottomSheetContent, setBottomSheetContent] = useState<bottomSheetType>(
@@ -82,22 +86,26 @@ const MapPage = () => {
 
   /** 저장한 여행지 목록 버튼 클릭 */
   const onClickFavorite = async () => {
-    if (map) {
-      clearMarker();
+    if (isLoggedIn) {
+      if (map) {
+        clearMarker();
 
-      const res = await createFavoritePin(
-        DUMMY, // 서버에서 받아온 contentId list로 대체 필요
-        map,
-        setBottomSheetContent,
-        openPinBottomSheet,
-      );
+        const res = await createFavoritePin(
+          DUMMY, // 서버에서 받아온 contentId list로 대체 필요
+          map,
+          setBottomSheetContent,
+          openPinBottomSheet,
+        );
 
-      if (res) {
-        favoriteList.current = res.favoriteList;
-        setFavMarkers(res.defaultMarker);
+        if (res) {
+          favoriteList.current = res.favoriteList;
+          setFavMarkers(res.defaultMarker);
+        }
+
+        openFavoriteBottomSheet();
       }
-
-      openFavoriteBottomSheet();
+    } else {
+      setActivateModal(true);
     }
   };
 
@@ -186,67 +194,74 @@ const MapPage = () => {
     }
   };
 
+  const closeModal = () => {
+    setActivateModal(false);
+  };
+
   return (
-    <div id="map" css={MapContainer}>
-      <section css={buttonSection}>
-        <div css={topButtonSection}>
-          {isFavClicked ? (
-            <CloseBottomSheetIcon />
-          ) : (
-            <MapFavoirteIcon onClick={onClickFavorite} />
-          )}
-        </div>
-        {!isPinClicked && (
-          <div css={bottomButtonSection}>
-            <button css={searchButton} type="button" onClick={onClickSearch}>
-              주변 여행지 찾아보기
-              <RefreshMonoIcon />
-            </button>
-            <button css={rightButton} onClick={getCurrentLoc} type="button">
-              {getLocActive ? (
-                <MapSearchActiveIcon />
-              ) : (
-                <MapSearchInactiveIcon />
-              )}
-            </button>
+    <>
+      <div id="map" css={MapContainer}>
+        <section css={buttonSection}>
+          <div css={topButtonSection}>
+            {isFavClicked ? (
+              <CloseBottomSheetIcon />
+            ) : (
+              <MapFavoirteIcon onClick={onClickFavorite} />
+            )}
           </div>
-        )}
-      </section>
-      <div css={bottomSection}>
-        {isPinClicked && (
-          <PinBottomSheet
-            title={bottomSheetContent.title}
-            address={bottomSheetContent.address}
-            image={bottomSheetContent.image}
-            contentId={bottomSheetContent.contentId}
-            closeBottomSheet={() => {
-              setIsPinClicked(false);
-            }}
-          />
-        )}
+          {!isPinClicked && (
+            <div css={bottomButtonSection}>
+              <button css={searchButton} type="button" onClick={onClickSearch}>
+                주변 여행지 찾아보기
+                <RefreshMonoIcon />
+              </button>
+              <button css={rightButton} onClick={getCurrentLoc} type="button">
+                {getLocActive ? (
+                  <MapSearchActiveIcon />
+                ) : (
+                  <MapSearchInactiveIcon />
+                )}
+              </button>
+            </div>
+          )}
+        </section>
+        <div css={bottomSection}>
+          {isPinClicked && (
+            <PinBottomSheet
+              title={bottomSheetContent.title}
+              address={bottomSheetContent.address}
+              image={bottomSheetContent.image}
+              contentId={bottomSheetContent.contentId}
+              closeBottomSheet={() => {
+                setIsPinClicked(false);
+              }}
+            />
+          )}
 
-        {isFavClicked && (
-          <FavoriteBottomSheet
-            favoriteList={favoriteList.current}
-            closeBottomSheet={closeFavoriteBottomSheet}
-          />
-        )}
+          {isFavClicked && (
+            <FavoriteBottomSheet
+              favoriteList={favoriteList.current}
+              closeBottomSheet={closeFavoriteBottomSheet}
+            />
+          )}
 
-        {isFavPinClicked && (
-          <PinBottomSheet
-            title={bottomSheetContent.title}
-            address={bottomSheetContent.address}
-            image={bottomSheetContent.image}
-            contentId={bottomSheetContent.contentId}
-            closeBottomSheet={() => setIsFavPinClicked(false)}
-          />
-        )}
+          {isFavPinClicked && (
+            <PinBottomSheet
+              title={bottomSheetContent.title}
+              address={bottomSheetContent.address}
+              image={bottomSheetContent.image}
+              contentId={bottomSheetContent.contentId}
+              closeBottomSheet={() => setIsFavPinClicked(false)}
+            />
+          )}
 
-        <nav css={menuBarCss}>
-          <MenuBar />
-        </nav>
+          <nav css={menuBarCss}>
+            <MenuBar />
+          </nav>
+        </div>
       </div>
-    </div>
+      {activateModal && <LoginModal onClick={closeModal} />}
+    </>
   );
 };
 

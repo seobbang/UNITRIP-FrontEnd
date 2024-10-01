@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 import { KakaoTalkIcon, XMonoIcon } from '@/assets/icon';
@@ -14,6 +15,28 @@ interface LoginModalProps {
  */
 const LoginModal = (props: LoginModalProps) => {
   const { onClick } = props;
+  const loginRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // 스크롤 방지
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleFocus = (e: MouseEvent) => {
+      if (loginRef.current && !loginRef.current.contains(e.target as Node))
+        onClick();
+    };
+    document.addEventListener('mouseup', handleFocus);
+
+    return () => {
+      document.removeEventListener('mouseup', handleFocus);
+    };
+  }, []);
 
   const handleLogin = () => {
     if (window.Kakao && window.Kakao.Auth) {
@@ -28,7 +51,7 @@ const LoginModal = (props: LoginModalProps) => {
 
   const portalContent = (
     <div css={backgroundCss}>
-      <div css={container}>
+      <div css={container} ref={loginRef}>
         <p css={titleCss}>카카오톡 로그인</p>
         <p css={descriptionCss}>서비스 이용을 위해 로그인이 필요해요.</p>
         <button type="button" css={linkCss} onClick={handleLogin}>
@@ -42,7 +65,10 @@ const LoginModal = (props: LoginModalProps) => {
     </div>
   );
 
-  return createPortal(portalContent, document.body);
+  return createPortal(
+    portalContent,
+    document.getElementById('root') as HTMLElement,
+  );
 };
 
 export default LoginModal;
@@ -53,11 +79,10 @@ const backgroundCss = css`
   align-items: center;
   position: absolute;
   top: 0;
-  left: 0;
   z-index: 999;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
 
   background-color: rgb(82 82 82 / 72%);
 `;

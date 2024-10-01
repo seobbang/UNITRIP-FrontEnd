@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   HomeMonoIcon,
@@ -8,6 +9,8 @@ import {
   UserMonoIcon,
 } from '@/assets/icon';
 import { COLORS } from '@/styles/constants';
+
+import LoginModal from './LoginModal';
 
 // 각 페이지 url 변경시 이 부분을 수정해주세요.
 const PATH_MATCH = [
@@ -20,24 +23,49 @@ const PATH_MATCH = [
 const MenuBar = () => {
   const { pathname } = useLocation();
   const firstPathname = `/${pathname.split('/')[1]}`;
+  const navigate = useNavigate();
+
+  const isLoggedIn = sessionStorage.getItem('kakao_id');
+
+  const [activateModal, setActivateModal] = useState(false);
+
+  const handleNavigation = (url: string) => {
+    if (url === '/mypage') {
+      if (isLoggedIn) {
+        navigate(url);
+      } else {
+        setActivateModal(true);
+      }
+    } else {
+      navigate(url);
+    }
+  };
+
+  const closeModal = () => {
+    setActivateModal(false);
+  };
 
   const menuList = PATH_MATCH.map(({ url, name, icon }) => {
     return (
-      <Link
+      <button
+        type="button"
         key={url}
-        to={url}
+        onClick={() => handleNavigation(url)}
         className={firstPathname === url ? 'selected' : ''}
         css={linkCss}>
         {icon}
         <span css={spanCss}>{name}</span>
-      </Link>
+      </button>
     );
   });
 
   return (
-    <nav css={navCss}>
-      <div css={container}>{menuList}</div>
-    </nav>
+    <>
+      <nav css={navCss}>
+        <div css={container}>{menuList}</div>
+      </nav>
+      {activateModal && <LoginModal onClick={closeModal} />}
+    </>
   );
 };
 
