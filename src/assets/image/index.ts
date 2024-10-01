@@ -1,15 +1,3 @@
-export { default as Sample01Image } from './img01.jpeg';
-export { default as Sample02Image } from './img02.jpeg';
-export { default as Sample03Image } from './img03.jpeg';
-export { default as Sample04Image } from './img04.jpeg';
-export { default as Sample05Image } from './img05.jpeg';
-export { default as Sample06Image } from './img06.jpeg';
-export { default as Sample07Image } from './img07.jpeg';
-export { default as Sample08Image } from './img08.jpeg';
-export { default as Sample09Image } from './img09.jpeg';
-export { default as Sample10Image } from './img10.jpeg';
-export { default as Sample11Image } from './img11.jpeg';
-export { default as Sample12Image } from './img12.jpeg';
 export { default as BackgroundImage } from './img_background.png';
 export { default as DefaultImage } from './img_default.png';
 export { default as ErrorReportCompleteImage } from './img_error_report_complete.png';

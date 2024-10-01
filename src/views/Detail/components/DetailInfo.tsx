@@ -2,24 +2,38 @@ import { css } from '@emotion/react';
 
 import { COLORS, FONTS } from '@/styles/constants';
 
-function DetailInfo() {
+import { detailInfoType } from '../pages/DetailPage';
+
+interface detailInfoProps {
+  detailInfo: detailInfoType;
+}
+
+const DetailInfo = (props: detailInfoProps) => {
+  const { detailInfo } = props;
+
   return (
     <section css={detailInfoContainer}>
       <div css={infoItem}>
         <span css={title}>휴무일</span>
-        <p css={content}>연중무휴</p>
+        <span
+          css={content}
+          dangerouslySetInnerHTML={{ __html: detailInfo.restDate }}></span>
       </div>
       <div css={infoItem}>
         <span css={title}>이용시간</span>
-        <p css={content}>주중 10:30~22:30 (매표마감 21:30)</p>
+        <span
+          dangerouslySetInnerHTML={{ __html: detailInfo.useTime }}
+          css={content}></span>
       </div>
       <div css={infoItem}>
         <span css={title}>이용요금</span>
-        <p css={content}>-</p>
+        <span
+          dangerouslySetInnerHTML={{ __html: detailInfo.useFee }}
+          css={content}></span>
       </div>
     </section>
   );
-}
+};
 
 export default DetailInfo;
 

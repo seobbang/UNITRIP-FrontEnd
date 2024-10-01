@@ -1,26 +1,59 @@
 import { css } from '@emotion/react';
+import { useEffect, useRef, useState } from 'react';
 
-import { CallIcon, ClockIcon, MapPinIcon } from '@/assets/icon';
+import { ArrowDownIcon, CallIcon, ClockIcon, MapPinIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 
-function PlaceInfo() {
+interface placeInfoProps {
+  placeInfo: {
+    addr: string;
+    tel: string;
+    useTime: string;
+  };
+}
+
+const PlaceInfo = (props: placeInfoProps) => {
+  const { placeInfo } = props;
+  const { addr, tel, useTime } = placeInfo;
+
+  const addressRef = useRef<HTMLDivElement>(null);
+  const telRef = useRef<HTMLDivElement>(null);
+  const useTimeRef = useRef<HTMLDivElement>(null);
+
+  const lineCnt = useTime.split('<br>').length;
+
+  const [isClose, setIsClose] = useState(true);
+
+  useEffect(() => {
+    if (useTimeRef.current && addressRef.current && telRef.current) {
+      useTimeRef.current.innerHTML = useTime;
+      addressRef.current.innerHTML = addr;
+      telRef.current.innerHTML = tel;
+    }
+  }, [placeInfo]);
+
+  const handleToggle = () => {
+    setIsClose(false);
+  };
+
   return (
     <section css={placeInfoContainer}>
       <div css={listItem}>
         <MapPinIcon />
-        <span>대전광역시 서구 둔산대로 155</span>
+        <div ref={addressRef} />
       </div>
       <div css={listItem}>
         <CallIcon />
-        <span>010-0000-0000</span>
+        <div ref={telRef} />
       </div>
-      <div css={listItem}>
+      <div css={mapListItem(isClose)}>
         <ClockIcon />
-        <span>수요일 10:00-19:00</span>
+        <div ref={useTimeRef} css={contentCss(isClose)} />
+        {lineCnt > 1 && isClose && <ArrowDownIcon onClick={handleToggle} />}
       </div>
     </section>
   );
-}
+};
 
 export default PlaceInfo;
 
@@ -41,4 +74,16 @@ const listItem = css`
   color: ${COLORS.gray9};
 
   ${FONTS.Body4};
+`;
+
+const mapListItem = (isClose: boolean) => css`
+  ${listItem};
+  align-items: ${isClose ? 'center' : 'flex-start'};
+`;
+
+const contentCss = (isClose: boolean) => css`
+  overflow: hidden;
+
+  width: 100%;
+  max-height: ${isClose ? '2.2rem' : 'none'};
 `;

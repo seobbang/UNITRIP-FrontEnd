@@ -12,7 +12,7 @@ export const getMapCenter = async (map: mapType | undefined) => {
         mapX: map.getCenter().La.toString(),
         mapY: map.getCenter().Ma.toString(),
         radius: '3000',
-        contentTypeId: 12,
+        contentTypeId: 14,
       });
 
       return response;

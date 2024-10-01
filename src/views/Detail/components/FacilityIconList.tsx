@@ -1,10 +1,17 @@
 import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
+import { MAP_FACILITIES_API_KEY } from '@/constants/facilities';
 import { COLORS, FONTS } from '@/styles/constants';
+import { detailWithTour1ResItem } from '@/types/detailWithTour1';
+
+import { getDetailWithTourRes } from '../utils/getDetailWithTour1';
 
 interface FacilityIConListProps {
   title: string;
   facilities: Facility[];
+  response?: detailWithTour1ResItem[] | undefined;
 }
 
 interface Facility {
@@ -13,8 +20,43 @@ interface Facility {
   inactive: JSX.Element;
 }
 
+interface facilityListType {
+  name: string;
+  apiKey: string;
+  isActive: boolean;
+  icon: JSX.Element;
+}
+
 function FacilityIconList(props: FacilityIConListProps) {
+  const { contentId } = useParams();
   const { title, facilities } = props;
+  const [facilityList, setFacilityList] = useState<facilityListType[]>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getDetailWithTourRes(Number(contentId));
+      if (res) {
+        const { item } = res;
+        filterFacility(item);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const filterFacility = (response: detailWithTour1ResItem[]) => {
+    const iconList = facilities.map((facility) => {
+      const apiKey = MAP_FACILITIES_API_KEY[facility.name];
+      const isActive = response.some((res) => res[apiKey] !== '');
+
+      return {
+        name: facility.name,
+        apiKey: apiKey,
+        isActive: isActive,
+        icon: isActive ? facility.active : facility.inactive,
+      };
+    });
+    setFacilityList(iconList);
+  };
 
   return (
     <div css={listWrapper}>
@@ -23,12 +65,13 @@ function FacilityIconList(props: FacilityIConListProps) {
       </div>
 
       <ul css={iconList}>
-        {facilities.map((item: Facility) => (
-          <li key={item.name} css={iconWrapper}>
-            {item.active}
-            <span css={iconName(item.name)}>{item.name}</span>
-          </li>
-        ))}
+        {facilityList &&
+          facilityList.map((item: facilityListType) => (
+            <li key={item.apiKey} css={iconWrapper}>
+              {item.icon}
+              <span css={iconName(item.name, item.isActive)}>{item.name}</span>
+            </li>
+          ))}
       </ul>
     </div>
   );
@@ -72,10 +115,10 @@ const iconWrapper = css`
   max-width: 7rem;
 `;
 
-const iconName = (text: string) => css`
+const iconName = (text: string, isActive: boolean) => css`
   word-break: keep-all;
 
-  color: ${COLORS.gray5};
+  color: ${isActive ? COLORS.gray5 : COLORS.gray2};
   text-align: center;
   ${FONTS.Small2};
 

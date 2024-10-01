@@ -1,10 +1,12 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { ArrowLeftIcon, HeartFilledIcon, HeartGrayIcon } from '@/assets/icon';
 
-function Header() {
+const Header = () => {
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const favoriteOnClick = () => {
     setIsFavorite(!isFavorite);
@@ -12,7 +14,7 @@ function Header() {
 
   return (
     <header css={headerContainer}>
-      <button type="button">
+      <button type="button" onClick={() => navigate('/')}>
         <ArrowLeftIcon />
       </button>
       <button type="button" onClick={favoriteOnClick}>
@@ -20,7 +22,7 @@ function Header() {
       </button>
     </header>
   );
-}
+};
 
 export default Header;
 

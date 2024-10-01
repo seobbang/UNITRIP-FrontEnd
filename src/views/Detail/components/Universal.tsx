@@ -10,7 +10,7 @@ import {
 } from '../../../constants/facilities';
 import FacilityIconList from './FacilityIconList';
 
-function Universal() {
+const Universal = () => {
   return (
     <section css={universalContainer}>
       <div css={iconListContainer}>
@@ -24,7 +24,7 @@ function Universal() {
       </div>
     </section>
   );
-}
+};
 export default Universal;
 
 const universalContainer = css`

@@ -1,37 +1,156 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { BackgroundImage } from '@/assets/image';
+import { DefaultImage } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
 
 import ErrorReport from '../components/ErrorReport';
 import Header from '../components/Header';
 import PlaceInfo from '../components/PlaceInfo';
 import Tab from '../components/Tab';
+import { getDetailCommonRes } from '../utils/getDetailCommon1';
+import { getDetailIntroRes } from '../utils/getDetailIntro1';
 
-function DetailPage() {
+export interface placeInfoType {
+  title: string;
+  info: {
+    addr: string;
+    tel: string;
+    useTime: string;
+  };
+  imageUrl: string;
+}
+
+export interface detailInfoType {
+  restDate: string;
+  useTime: string;
+  useFee: string;
+}
+
+const DetailPage = () => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
   const { contentId } = useParams();
+  const navigate = useNavigate();
 
   const [selectedTab, setSelectedTab] = useState(
     pathname.endsWith('review') ? '리뷰' : '상세정보',
   );
+
+  const [placeInfo, setPlaceInfo] = useState<placeInfoType>({
+    title: '',
+    info: {
+      addr: '',
+      tel: '',
+      useTime: '',
+    },
+    imageUrl: '',
+  });
+
+  const [latlng, setLatLng] = useState({
+    lat: '',
+    lng: '',
+  });
+
+  const [detailInfo, setDetailInfo] = useState({
+    restDate: '',
+    useTime: '',
+    useFee: '',
+  });
+
+  const contentTypeId = useRef('12');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await getDetailCommon1Res();
+      await getDetailIntro1Res();
+    };
+
+    fetchData();
+  }, []);
+
+  const getDetailCommon1Res = async () => {
+    const res = await getDetailCommonRes(Number(contentId));
+
+    if (res) {
+      const { item } = res;
+      setPlaceInfo({
+        title: item[0].title,
+        info: {
+          addr: item[0].addr1 !== '' ? item[0].addr1 : '-',
+          tel: item[0].tel !== '' ? item[0].tel : '-',
+          useTime: '',
+        },
+        imageUrl: item[0].firstimage !== '' ? item[0].firstimage : DefaultImage,
+      });
+
+      contentTypeId.current = item[0].contenttypeid;
+
+      setLatLng({
+        lat: item[0].mapy,
+        lng: item[0].mapx,
+      });
+    }
+  };
+
+  const getDetailIntro1Res = async () => {
+    const res = await getDetailIntroRes(
+      Number(contentId),
+      contentTypeId.current,
+    );
+
+    if (res) {
+      const { item } = res;
+
+      setPlaceInfo((prev) => ({
+        ...prev,
+        info: {
+          ...prev.info,
+          useTime: item[0].usetime !== '' ? item[0].usetime : '-',
+        },
+      }));
+
+      setDetailInfo({
+        restDate: item[0].restdate !== '' ? item[0].restdate : '-',
+        useTime:
+          contentTypeId.current === '12'
+            ? item[0].usetime && item[0].usetime !== ''
+              ? item[0].usetime
+              : '-'
+            : contentTypeId.current === '14'
+              ? item[0].usetimeculture && item[0].usetimeculture !== ''
+                ? item[0].usetimeculture
+                : '-'
+              : '-',
+        useFee: item[0].usefee
+          ? item[0].usefee !== ''
+            ? item[0].usefee
+            : '-'
+          : '-',
+      });
+    }
+  };
+
   const handleTabChange = (tab: string) => {
     if (tab === '리뷰') navigate(`/${contentId}/review`);
     else navigate(`/${contentId}`);
     setSelectedTab(tab);
   };
+
   return (
     <div css={detailContainer}>
-      <div css={backgroundImg}>
+      <div css={backgroundImg(placeInfo.imageUrl)}>
         <Header />
-        <span css={title}>대전시립미술관</span>
+        <span css={title}>{placeInfo.title}</span>
       </div>
-      <PlaceInfo />
+      <PlaceInfo placeInfo={placeInfo.info} />
       <div css={gapLine}></div>
-      <Tab selectedTab={selectedTab} setSelectedTab={handleTabChange} />
+      <Tab
+        selectedTab={selectedTab}
+        setSelectedTab={handleTabChange}
+        latlng={latlng}
+        detailInfo={detailInfo}
+      />
       <div css={gapLine}></div>
 
       {selectedTab === '상세정보' ||
@@ -42,7 +161,7 @@ function DetailPage() {
       ) : null}
     </div>
   );
-}
+};
 
 export default DetailPage;
 
@@ -50,7 +169,7 @@ const detailContainer = css`
   width: 100dvw;
 `;
 
-const backgroundImg = css`
+const backgroundImg = (url: string) => css`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -64,7 +183,7 @@ const backgroundImg = css`
     rgb(0 0 0 / 34%) 100%
   );
   background-size: cover;
-  background-image: url(${BackgroundImage});
+  background-image: url(${url});
   background-repeat: no-repeat;
 `;
 

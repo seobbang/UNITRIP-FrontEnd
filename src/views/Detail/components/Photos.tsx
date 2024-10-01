@@ -1,54 +1,44 @@
 import { css } from '@emotion/react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import {
-  Sample01Image,
-  Sample02Image,
-  Sample03Image,
-  Sample04Image,
-  Sample05Image,
-  Sample06Image,
-  Sample07Image,
-  Sample08Image,
-  Sample09Image,
-  Sample10Image,
-  Sample11Image,
-  Sample12Image,
-} from '@/assets/image';
+import { detailImage1ResItem } from '@/types/detailImage1';
 
+import { getDetailImage1Res } from '../utils/getDetailImage1';
 import EmptyPhoto from './EmptyPhoto';
 
-const SampleImage = [
-  Sample01Image,
-  Sample02Image,
-  Sample03Image,
-  Sample04Image,
-  Sample05Image,
-  Sample06Image,
-  Sample07Image,
-  Sample08Image,
-  Sample09Image,
-  Sample10Image,
-  Sample11Image,
-  Sample12Image,
-];
+const Photos = () => {
+  const { contentId } = useParams();
+  const [imageList, setImageList] = useState<detailImage1ResItem[]>([]);
 
-function Photos() {
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getDetailImage1Res(Number(contentId));
+      if (res) {
+        const { item } = res;
+        setImageList(item);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <section css={photosContainer(SampleImage.length)}>
-      {SampleImage.length === 0 ? (
+    <section css={photosContainer(imageList.length)}>
+      {imageList.length === 0 ? (
         <EmptyPhoto />
       ) : (
-        SampleImage.map((item, idx) => {
+        imageList.map((item, idx) => {
           return (
             <div css={photoWrapper} key={idx}>
-              <img src={item} alt="샘플이미지" css={photoItem} />
+              <img src={item.originimgurl} alt={item.imgname} css={photoItem} />
             </div>
           );
         })
       )}
     </section>
   );
-}
+};
 
 export default Photos;
 
@@ -57,13 +47,14 @@ const photosContainer = (variant: number) => css`
   padding: 1rem;
 
   ${variant !== 0 &&
-  `
+  css`
     display: grid;
     gap: 0.5rem;
     grid-template-columns: repeat(3, 1fr);
     place-items: center center;
+
     padding-bottom: 6rem;
-`}
+  `}
 `;
 
 const photoWrapper = css`
