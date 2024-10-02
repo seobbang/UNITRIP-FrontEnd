@@ -17,7 +17,7 @@ const Error = () => {
       <button
         css={moveBtn}
         onClick={() => {
-          navigate(-1);
+          navigate(-2);
         }}>
         이전 페이지로
       </button>

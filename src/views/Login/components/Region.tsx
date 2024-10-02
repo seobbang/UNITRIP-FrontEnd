@@ -1,5 +1,6 @@
 import { css } from '@emotion/react';
 
+import { ThumbsUpMonoIcon } from '@/assets/icon';
 import BottomButton from '@/components/BottomButton';
 import SelectRegion from '@/components/SelectRegion';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -26,6 +27,10 @@ const Region = ({ setStep }: RegionProps) => {
           선택해주세요
         </p>
         <SelectRegion region={region} setRegion={setRegion} />
+        <div css={explanation}>
+          <ThumbsUpMonoIcon />
+          <p>해당 지역을 중심으로 여행지를 추천해드려요</p>
+        </div>
       </section>
       <BottomButton text="다음" clickedFn={moveNext} disabled={!region.town} />
     </>
@@ -57,4 +62,19 @@ const highlight = css`
   display: inline;
 
   box-shadow: inset 0 -1.5rem 0 ${COLORS.brand2};
+`;
+
+const explanation = css`
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+
+  width: calc(100% + 4rem);
+  padding: 1.2rem 2rem;
+  margin-left: -2rem;
+
+  background-color: ${COLORS.gray0};
+
+  color: ${COLORS.gray9};
+  ${FONTS.Body3};
 `;

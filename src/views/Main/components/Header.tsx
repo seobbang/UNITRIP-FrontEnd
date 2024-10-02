@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { Link } from 'react-router-dom';
 
 import { SearchMonoIcon, UnitripIcon } from '@/assets/icon';
 import { COLORS } from '@/styles/constants';
@@ -7,9 +8,9 @@ const Header = () => {
   return (
     <header css={header}>
       <UnitripIcon />
-      <button css={searchCss}>
+      <Link to="/search" css={searchCss}>
         <SearchMonoIcon />
-      </button>
+      </Link>
     </header>
   );
 };

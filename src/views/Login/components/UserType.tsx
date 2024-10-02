@@ -40,14 +40,12 @@ const UserType = ({ userData }: UserTypeProps) => {
               setTravelerType={setTravelerType}
             />
           </div>
-
-          <div css={explanation}>
-            <MapMonoGrayIcon />
-            <p>여행자 유형은 장소 추천과 리뷰 필터링에 반영돼요!</p>
-          </div>
         </div>
       </section>
-
+      <div css={explanation}>
+        <MapMonoGrayIcon />
+        <p>여행자 유형은 장소 추천과 리뷰 필터링에 반영돼요!</p>
+      </div>
       <BottomButton
         text="확인"
         clickedFn={submitSignUp}
@@ -62,6 +60,7 @@ export default UserType;
 const userTypeLayout = css`
   display: flex;
   flex-direction: column;
+  position: relative;
 
   height: 100%;
   padding: 2rem;
@@ -102,14 +101,14 @@ const explanation = css`
   display: flex;
   gap: 0.8rem;
   align-items: center;
+  position: absolute;
+  bottom: 8rem;
 
-  width: calc(100% + 4rem);
+  width: 100%;
   padding: 1.2rem 2rem;
-  margin-left: -2rem;
 
   background-color: ${COLORS.gray0};
 
   color: ${COLORS.gray9};
   ${FONTS.Body3};
-  font-weight: 400;
 `;

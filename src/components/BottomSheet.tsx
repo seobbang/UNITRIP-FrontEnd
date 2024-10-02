@@ -100,8 +100,8 @@ const backgroundCss = css`
 
   z-index: 999;
 
-  width: 100vw;
-  height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   margin: 0 auto;
 
   background-color: rgb(0 0 0 / 30%);
@@ -112,7 +112,7 @@ const containerCss = (height: string) => css`
   bottom: 0;
   overflow: auto;
 
-  width: 100vw;
+  width: 100dvw;
   height: ${height};
   border-radius: 1.2rem 1.2rem 0 0;
 
@@ -122,11 +122,11 @@ const containerCss = (height: string) => css`
 `;
 
 const buttonCotainerCss = css`
-  position: absolute;
+  position: fixed;
   bottom: 1.2rem;
   left: 0;
 
-  width: 100vw;
+  width: 100dvw;
   padding: 0 2rem;
 `;
 

@@ -9,7 +9,9 @@ export const cardContainer = css`
   display: flex;
   gap: 1.2rem;
 
-  width: 100%;
+  width: fit-content;
   margin-top: 1.6rem;
+  margin-right: 2rem;
   margin-left: 2rem;
+  max-width: fit-content !important;
 `;

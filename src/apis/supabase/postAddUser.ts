@@ -13,6 +13,7 @@ const postAddUser = async ({
   region,
   travelerType,
 }: AddUserProps) => {
+  console.log(userData);
   const { id, nickname, thumbnail_image_url } = userData;
 
   const { data, error } = await unitripSupabase

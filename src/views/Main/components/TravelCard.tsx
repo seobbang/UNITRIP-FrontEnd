@@ -52,6 +52,9 @@ const background = css`
   top: 0;
   left: 0;
 
+  min-width: 23.2rem;
+  max-width: 23.2rem;
+
   height: 24.8rem;
   padding: 1.6rem;
   border-radius: 1.2rem;
@@ -61,8 +64,6 @@ const background = css`
     rgb(0 0 0 / 0%) 0%,
     rgb(0 0 0 / 34%) 100%
   );
-
-  min-width: 23.2rem;
 `;
 
 const heart = css`

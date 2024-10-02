@@ -43,6 +43,7 @@ export { default as CheckEmptyIcon } from './icon-check-empty.svg?react';
 export { default as CheckFilledYellowIcon } from './icon-check-fill-yellow.svg?react';
 export { default as CheckFilledIcon } from './icon-check-filled.svg?react';
 export { default as HeartFillMonoIcon } from './icon-heart-fill-mono.svg?react';
+export { default as ThumbsUpMonoIcon } from './icon-thumb-up-mono.svg?react';
 export { default as MapMonoGrayIcon } from './icon-map-mono-gray.svg?react';
 export { default as BigInfoIcon } from './icon_big_info.svg?react';
 export { default as BlindTypeIcon } from './icon_blind_type.svg?react';
