@@ -15,7 +15,7 @@ export interface bottomSheetInfoType {
 }
 
 export const createFavoritePin = async (
-  idList: contentIdListType[],
+  idList: number[],
   kakaoMap: mapType | undefined,
   setBottomSheetContent: React.Dispatch<React.SetStateAction<bottomSheetType>>,
   openPinBottomSheet: (state: string) => void,

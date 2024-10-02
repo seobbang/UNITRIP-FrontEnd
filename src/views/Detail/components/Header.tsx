@@ -1,19 +1,28 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import toggleFavorite from '@/apis/supabase/toggleFavorite';
 import { ArrowLeftIcon, HeartFilledIcon, HeartGrayIcon } from '@/assets/icon';
 import LoginModal from '@/components/LoginModal';
 
-const Header = () => {
-  const [isFavorite, setIsFavorite] = useState<boolean>(false);
+interface headerProps {
+  isFavorite: boolean;
+  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Header = (props: headerProps) => {
+  const { isFavorite, setIsFavorite } = props;
+  const { contentId } = useParams();
+
   const [activateModal, setActivateModal] = useState(false);
 
   const isLoggedIn = sessionStorage.getItem('kakao_id');
   const navigate = useNavigate();
 
-  const favoriteOnClick = () => {
+  const favoriteOnClick = async () => {
     if (isLoggedIn) {
+      await toggleFavorite(Number(contentId));
       setIsFavorite(!isFavorite);
     } else {
       setActivateModal(true);

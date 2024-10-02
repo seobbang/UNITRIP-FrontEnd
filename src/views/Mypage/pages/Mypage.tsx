@@ -92,7 +92,7 @@ const Mypage = () => {
           leftFn={backToMainTab}
         />
       )}
-      <div css={mypageContainer}>{renderComponent(currentTab)}</div>
+      <div css={mypageContainer(currentTab)}>{renderComponent(currentTab)}</div>
       {currentTab === 'main' && <MenuBar />}
     </>
   );
@@ -100,12 +100,14 @@ const Mypage = () => {
 
 export default Mypage;
 
-const mypageContainer = css`
+const mypageContainer = (tab: string) => css`
   display: flex;
   flex-direction: column;
 
   width: 100dvw;
-  height: calc(100dvh - 8rem - 4.8rem);
+  height: ${tab === '저장한 여행지 목록'
+    ? 'calc(100dvh - 5rem)'
+    : 'calc(100dvh - 8rem - 4.8rem)'};
 
   background-color: white;
 `;

@@ -1,16 +1,14 @@
 import { getDetailCommon1 } from '@/apis/public/detailCommon1';
 
-export interface favoriteListType {
+export interface cardInfoType {
   title: string;
   address: string;
   image: string;
-  mapX: string;
-  mapY: string;
   contentId: string;
 }
 
-export const getDetailCommonRes = async (contentIdList: number[]) => {
-  const favoriteList: favoriteListType[] = [];
+export const getDetailInfo = async (contentIdList: number[]) => {
+  const cardInfo: cardInfoType[] = [];
 
   const promises = contentIdList.map(async (id) => {
     const response = await getDetailCommon1({
@@ -25,12 +23,10 @@ export const getDetailCommonRes = async (contentIdList: number[]) => {
     });
 
     if (response) {
-      favoriteList.push({
+      cardInfo.push({
         title: response.item[0].title,
         address: response.item[0].addr1,
         image: response.item[0].firstimage,
-        mapX: response.item[0].mapx,
-        mapY: response.item[0].mapy,
         contentId: response.item[0].contentid,
       });
     }
@@ -38,7 +34,7 @@ export const getDetailCommonRes = async (contentIdList: number[]) => {
 
   await Promise.all(promises);
 
-  if (favoriteList.length !== 0) {
-    return { favoriteList };
+  if (cardInfo.length !== 0) {
+    return { cardInfo };
   }
 };

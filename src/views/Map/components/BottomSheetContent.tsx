@@ -1,6 +1,7 @@
 /** 바텀시트 내부 맵핑 할 내용들 */
 
 import { css } from '@emotion/react';
+import { useNavigate } from 'react-router-dom';
 
 import { DefaultImage } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -16,11 +17,10 @@ const BottomSheetContent = (props: contentProps) => {
   const { title, address, image, contentId } = props;
   const isImageNone = image === '';
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const onClickContent = () => {
-    console.log(contentId);
-    // navigate('/detail');
+    navigate(`/${contentId}`);
   };
 
   return (

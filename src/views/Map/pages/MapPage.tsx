@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 
+import getUserData from '@/apis/supabase/getUserData';
 import {
   CloseBottomSheetIcon,
   MapFavoirteIcon,
@@ -10,12 +11,12 @@ import {
 } from '@/assets/icon';
 import LoginModal from '@/components/LoginModal';
 import MenuBar from '@/components/MenuBar';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
 import { locationBasedList1Res } from '@/types/locationBasedList1';
 
 import FavoriteBottomSheet from '../components/FavoriteBottomSheet';
 import PinBottomSheet from '../components/PinBottomSheet';
-import { DUMMY } from '../constants/DUMMY';
 import { createFavoritePin } from '../utils/createFavoritePin';
 import { createKakaoMap } from '../utils/createKakaoMap';
 import { createMapPin } from '../utils/createMapPin';
@@ -48,7 +49,7 @@ const MapPage = () => {
   const [getLocActive, setGetLocActive] = useState(false); // 위치 허용에 따른 아이콘 변화
   const [activateModal, setActivateModal] = useState(false);
 
-  const isLoggedIn = sessionStorage.getItem('kako_id');
+  const kakaoId = sessionStorage.getItem('kakao_id');
 
   // 바텀시트 내용
   const [bottomSheetContent, setBottomSheetContent] = useState<bottomSheetType>(
@@ -66,11 +67,15 @@ const MapPage = () => {
 
   const apiRes = useRef<locationBasedList1Res[]>([]); // 주변 여행지 검색 플로우 결과 저장
   const favoriteList = useRef<bottomSheetType[]>([]); // 저장한 여행지(공통정보api) 플로우 결과 저장
+  const contentIdList = useRef<number[]>([]);
+
+  /** 지도 진입 시,  */
+  useAsyncEffect(async () => {
+    await getUserLoc();
+  }, []);
 
   /** 기본 사용자의 위치에 따른 위도, 경도 값 업데이트 */
   useEffect(() => {
-    // 서버에서 사용자 위치 받아와 저장하는 set하는 로직 필요
-    setRegion({ city: '서울특별시', town: '광진구' });
     const currentTown = setDefaultLocation(region.city, region.town);
     setDefaultLoc({
       lat: currentTown?.lat,
@@ -84,28 +89,57 @@ const MapPage = () => {
     setMap(kakaoMap);
   }, [defaultLoc]);
 
-  /** 저장한 여행지 목록 버튼 클릭 */
-  const onClickFavorite = async () => {
-    if (isLoggedIn) {
-      if (map) {
-        clearMarker();
-
-        const res = await createFavoritePin(
-          DUMMY, // 서버에서 받아온 contentId list로 대체 필요
-          map,
-          setBottomSheetContent,
-          openPinBottomSheet,
-        );
-
-        if (res) {
-          favoriteList.current = res.favoriteList;
-          setFavMarkers(res.defaultMarker);
-        }
-
-        openFavoriteBottomSheet();
+  /** 지도 진입 시 서버에 요청 전송해 사용자 위치 받아오기 */
+  const getUserLoc = async () => {
+    if (kakaoId) {
+      const response = await getUserData(Number(kakaoId));
+      if (response) {
+        setRegion({
+          city: response.region.split(' ')[0],
+          town: response.region.split(' ')[1],
+        });
       }
     } else {
+      setRegion({
+        city: '서울특별시',
+        town: '중구',
+      });
+    }
+  };
+
+  /** 저장한 여행지 버튼 클릭 시 서버에 요청 전송 */
+  const getFavList = async () => {
+    if (!kakaoId) {
       setActivateModal(true);
+    } else {
+      const response = await getUserData(Number(kakaoId));
+      if (response) {
+        contentIdList.current = response.favorite_list;
+      }
+    }
+  };
+
+  /** 저장한 여행지 목록 버튼 클릭 */
+  const onClickFavorite = async () => {
+    await getFavList(); // 서버에서 contentId 리스트 받아오기
+
+    if (map) {
+      clearMarker();
+
+      // 하트 마커 그리기
+      const res = await createFavoritePin(
+        contentIdList.current,
+        map,
+        setBottomSheetContent,
+        openPinBottomSheet,
+      );
+
+      if (res) {
+        favoriteList.current = res.favoriteList;
+        setFavMarkers(res.defaultMarker);
+      }
+
+      kakaoId && openFavoriteBottomSheet();
     }
   };
 
