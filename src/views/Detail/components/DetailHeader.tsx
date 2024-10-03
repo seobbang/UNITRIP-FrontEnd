@@ -1,18 +1,19 @@
-import { css } from '@emotion/react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import toggleFavorite from '@/apis/supabase/toggleFavorite';
 import { ArrowLeftIcon, HeartFilledIcon, HeartGrayIcon } from '@/assets/icon';
+import Header from '@/components/Header';
 import LoginModal from '@/components/LoginModal';
 
 interface headerProps {
   isFavorite: boolean;
   setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>;
+  changeCnt: number;
 }
 
-const Header = (props: headerProps) => {
-  const { isFavorite, setIsFavorite } = props;
+const DetailHeader = (props: headerProps) => {
+  const { isFavorite, setIsFavorite, changeCnt } = props;
   const { contentId } = useParams();
 
   const [activateModal, setActivateModal] = useState(false);
@@ -35,29 +36,15 @@ const Header = (props: headerProps) => {
 
   return (
     <>
-      <header css={headerContainer}>
-        <button type="button" onClick={() => navigate('/')}>
-          <ArrowLeftIcon />
-        </button>
-        <button type="button" onClick={favoriteOnClick}>
-          {isFavorite ? <HeartFilledIcon /> : <HeartGrayIcon />}
-        </button>
-      </header>
+      <Header
+        leftIcon={ArrowLeftIcon}
+        leftFn={() => navigate(-Math.abs(changeCnt))}
+        rightIcon={isFavorite ? HeartFilledIcon : HeartGrayIcon}
+        rightFn={favoriteOnClick}
+      />
       {activateModal && <LoginModal onClick={closeModal} />}
     </>
   );
 };
 
-export default Header;
-
-const headerContainer = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  width: 100%;
-  height: 4.8rem;
-  padding: 1.2rem 2rem;
-
-  background-color: transparent;
-`;
+export default DetailHeader;

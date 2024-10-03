@@ -70,7 +70,7 @@ const section2Css = css`
 `;
 
 const buttonCss = css`
-  position: fixed;
+  position: absolute;
   top: 2.5rem;
   right: 2.4rem;
 

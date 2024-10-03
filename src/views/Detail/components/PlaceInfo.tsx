@@ -1,7 +1,13 @@
 import { css } from '@emotion/react';
 import { useEffect, useRef, useState } from 'react';
 
-import { ArrowDownIcon, CallIcon, ClockIcon, MapPinIcon } from '@/assets/icon';
+import {
+  ArrowToggleClosed,
+  ArrowToggleOpen,
+  CallIcon,
+  ClockIcon,
+  MapPinIcon,
+} from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
 
 interface placeInfoProps {
@@ -33,7 +39,7 @@ const PlaceInfo = (props: placeInfoProps) => {
   }, [placeInfo]);
 
   const handleToggle = () => {
-    setIsClose(false);
+    setIsClose((prev) => !prev);
   };
 
   return (
@@ -47,9 +53,14 @@ const PlaceInfo = (props: placeInfoProps) => {
         <div ref={telRef} />
       </div>
       <div css={mapListItem(isClose)}>
-        <ClockIcon />
+        <ClockIcon css={iconCss} />
         <div ref={useTimeRef} css={contentCss(isClose)} />
-        {lineCnt > 1 && isClose && <ArrowDownIcon onClick={handleToggle} />}
+        {lineCnt > 1 &&
+          (isClose ? (
+            <ArrowToggleClosed onClick={handleToggle} css={toggleCss} />
+          ) : (
+            <ArrowToggleOpen onClick={handleToggle} css={toggleCss} />
+          ))}
       </div>
     </section>
   );
@@ -69,7 +80,6 @@ const placeInfoContainer = css`
 const listItem = css`
   display: flex;
   gap: 0.8rem;
-  align-items: center;
 
   color: ${COLORS.gray9};
 
@@ -77,13 +87,26 @@ const listItem = css`
 `;
 
 const mapListItem = (isClose: boolean) => css`
-  ${listItem};
   align-items: ${isClose ? 'center' : 'flex-start'};
+  position: relative;
+
+  width: 100%;
+
+  ${listItem};
 `;
 
 const contentCss = (isClose: boolean) => css`
   overflow: hidden;
 
-  width: 100%;
   max-height: ${isClose ? '2.2rem' : 'none'};
+`;
+
+const iconCss = css`
+  margin-top: 0.3rem;
+`;
+
+const toggleCss = css`
+  ${iconCss}
+  position: absolute;
+  right: 0;
 `;

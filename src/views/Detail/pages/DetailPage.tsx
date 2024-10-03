@@ -7,8 +7,8 @@ import { DefaultImage } from '@/assets/image';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
 
+import DetailHeader from '../components/DetailHeader';
 import ErrorReport from '../components/ErrorReport';
-import Header from '../components/Header';
 import PlaceInfo from '../components/PlaceInfo';
 import Tab from '../components/Tab';
 import { getDetailCommonRes } from '../utils/getDetailCommon1';
@@ -65,6 +65,7 @@ const DetailPage = () => {
   const contentTypeId = useRef('12');
   const contentIdList = useRef<number[]>([]); //서버에서 받아온 contentnId List
   const kakaoId = sessionStorage.getItem('kakao_id');
+  const changeCnt = useRef(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +75,10 @@ const DetailPage = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [selectedTab]);
 
   /** 서버 통신 -> favorite_list 받아오기 */
   useAsyncEffect(async () => {
@@ -165,6 +170,8 @@ const DetailPage = () => {
   };
 
   const handleTabChange = (tab: string) => {
+    changeCnt.current++;
+
     if (tab === '리뷰') navigate(`/${contentId}/review`);
     else navigate(`/${contentId}`);
     setSelectedTab(tab);
@@ -173,7 +180,11 @@ const DetailPage = () => {
   return (
     <div css={detailContainer}>
       <div css={backgroundImg(placeInfo.imageUrl)}>
-        <Header isFavorite={isFavorite} setIsFavorite={setIsFavorite} />
+        <DetailHeader
+          isFavorite={isFavorite}
+          setIsFavorite={setIsFavorite}
+          changeCnt={changeCnt.current}
+        />
         <span css={title}>{placeInfo.title}</span>
       </div>
       <PlaceInfo placeInfo={placeInfo.info} />
