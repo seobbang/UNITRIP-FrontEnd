@@ -6,6 +6,7 @@ import { getBarrierFreeInfo, getSearchKeyword } from '@/apis/public/search';
 import getUserData from '@/apis/supabase/getUserData';
 import { SearchSetIcon } from '@/assets/icon';
 import MenuBar from '@/components/MenuBar';
+import PageLoading from '@/components/PageLoading';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { useInfiniteScroll } from '@/hooks/use-infinite-scroll';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -150,32 +151,35 @@ const SearchResultPage = () => {
   };
 
   return (
-    <div css={containerCss}>
-      <SearchBarContainer initialWord={initialWord}>
-        <button type="button" css={buttonCss} onClick={openFilter}>
-          <SearchSetIcon />
-          {selectedCategory()}
-        </button>
-        <SearchResult
-          placeData={placeData}
-          targetElement={targetElement}
-          loading={loading}
-          filterState={filterState}
-          heartList={userData?.favorite_list || []}
-        />
-      </SearchBarContainer>
+    <>
+      {loading && placeData.length === 0 && <PageLoading />}
+      <div css={containerCss}>
+        <SearchBarContainer initialWord={initialWord}>
+          <button type="button" css={buttonCss} onClick={openFilter}>
+            <SearchSetIcon />
+            {selectedCategory()}
+          </button>
+          <SearchResult
+            placeData={placeData}
+            targetElement={targetElement}
+            loading={loading}
+            filterState={filterState}
+            heartList={userData?.favorite_list || []}
+          />
+        </SearchBarContainer>
 
-      {showGuide && <Guide handleSetShowGuide={handleSetShowGuide} />}
-      <MenuBar />
+        {showGuide && <Guide handleSetShowGuide={handleSetShowGuide} />}
+        <MenuBar />
 
-      {isFilterOpen && (
-        <FilterBottomSheet
-          closeBottomSheet={closeFilter}
-          filterState={filterState}
-          handleFilterState={handleFilterState}
-        />
-      )}
-    </div>
+        {isFilterOpen && (
+          <FilterBottomSheet
+            closeBottomSheet={closeFilter}
+            filterState={filterState}
+            handleFilterState={handleFilterState}
+          />
+        )}
+      </div>
+    </>
   );
 };
 

@@ -184,13 +184,15 @@ const DetailPage = () => {
         latlng={latlng}
         detailInfo={detailInfo}
       />
-      <div css={gapLine}></div>
 
       {selectedTab === '상세정보' ||
       selectedTab === '유니버설' ||
       selectedTab === '지도' ||
       selectedTab === '사진' ? (
-        <ErrorReport />
+        <>
+          <div css={gapLine}></div>
+          <ErrorReport />
+        </>
       ) : null}
     </div>
   );

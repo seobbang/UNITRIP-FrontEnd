@@ -4,6 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import getReviews from '@/apis/supabase/getReviews';
 import getUserData from '@/apis/supabase/getUserData';
+import Loading from '@/components/Loading';
 import ToastMessage from '@/components/ToastMessage';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { ReviewResponse } from '@/types/api/review';
@@ -35,6 +36,7 @@ const Review = () => {
     isGuideShown(STORAGE_KEY.hideReviewFilterGuide),
   );
   const [toast, setToast] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [filterState, setFilterState] = useState(INITIAL_FILTER_STATE);
 
@@ -77,8 +79,13 @@ const Review = () => {
   }, []);
 
   useAsyncEffect(async () => {
-    const data = await getReviews(contentId as string);
-    setReviewData(data);
+    setLoading(true);
+    try {
+      const data = await getReviews(contentId as string);
+      setReviewData(data);
+    } finally {
+      setLoading(false);
+    }
 
     const kakaoId = sessionStorage.getItem('kakao_id');
     if (!kakaoId) return;
@@ -86,27 +93,33 @@ const Review = () => {
     setUserData(userData);
   }, [location.pathname]);
 
-  if (!reviewData || reviewData.length === 0) return <NoReview />;
+  if (loading) return <Loading />;
 
   return (
     <>
-      <TotalScore reviewData={reviewData} />
-      <TotalReview reviewCount={reviewData.length} />
-      <SelectedCategory
-        filterState={filterState}
-        handleFilterState={handleFilterState}
-        openBottomSheet={openBottomSheet}
-        defaultCategory={userData?.universal_type}
-      />
-      <ul css={reviewCardContainerCss}>
-        {reviewData
-          ?.filter(({ convenience }) =>
-            selectedFilterList.every((c) => convenience.includes(c)),
-          )
-          .map((item) => {
-            return <ReviewCard key={item.id} {...item} />;
-          })}
-      </ul>
+      {!reviewData || reviewData.length === 0 ? (
+        <NoReview />
+      ) : (
+        <>
+          <TotalScore reviewData={reviewData} />
+          <TotalReview reviewCount={reviewData.length} />
+          <SelectedCategory
+            filterState={filterState}
+            handleFilterState={handleFilterState}
+            openBottomSheet={openBottomSheet}
+            defaultCategory={userData?.universal_type}
+          />
+          <ul css={reviewCardContainerCss}>
+            {reviewData
+              ?.filter(({ convenience }) =>
+                selectedFilterList.every((c) => convenience.includes(c)),
+              )
+              .map((item) => {
+                return <ReviewCard key={item.id} {...item} />;
+              })}
+          </ul>
+        </>
+      )}
 
       {showGuide && <Guide handleSetShowGuide={handleSetShowGuide} />}
       {isBottomSheetOpen && (
