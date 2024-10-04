@@ -43,7 +43,7 @@ const CategoryBottomSheet = (props: CategoryBottomSheetProps) => {
       <header css={titleCss}>
         <h3>리뷰 필터</h3>
       </header>
-      <ul>
+      <ul css={listContainerCss}>
         {['physical', 'visual', 'hearing', 'infant'].map((category) => (
           <CategoryList
             key={category}
@@ -64,4 +64,10 @@ const titleCss = css`
 
   color: ${COLORS.brand1};
   ${FONTS.H4};
+`;
+
+const listContainerCss = css`
+  overflow: auto;
+
+  height: calc(100% - 4rem);
 `;

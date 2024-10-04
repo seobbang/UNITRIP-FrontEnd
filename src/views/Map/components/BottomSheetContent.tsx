@@ -21,6 +21,7 @@ const BottomSheetContent = (props: contentProps) => {
 
   const onClickContent = () => {
     navigate(`/${contentId}`);
+    document.body.style.overflow = 'auto';
   };
 
   return (

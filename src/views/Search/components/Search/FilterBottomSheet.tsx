@@ -42,7 +42,7 @@ const FilterBottomSheet = (props: FilterBottomSheetProps) => {
       <header css={titleCss}>
         <h3>필터 상세 설정</h3>
       </header>
-      <ul>
+      <ul css={listContainerCss}>
         <FacilitiesAccordian
           category={'physical'}
           filterState={selectedFilterState}
@@ -82,4 +82,10 @@ const titleCss = css`
 
 const lineCss = css`
   border-top: 1px solid rgb(241 241 241 / 100%);
+`;
+
+const listContainerCss = css`
+  overflow: auto;
+
+  height: calc(100% - 4rem);
 `;

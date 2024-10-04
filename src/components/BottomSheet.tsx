@@ -110,7 +110,6 @@ const backgroundCss = css`
 const containerCss = (height: string) => css`
   position: absolute;
   bottom: 0;
-  overflow: auto;
 
   width: 100dvw;
   height: ${height};

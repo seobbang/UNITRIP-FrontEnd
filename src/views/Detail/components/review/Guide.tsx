@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 import { CheckFillIcon, XMonoIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -16,7 +17,16 @@ const Guide = (props: GuideProps) => {
   const hideGuideForADay = () => {
     setStorageHideGuide(STORAGE_KEY.hideReviewFilterGuide);
     handleSetShowGuide(false);
+    document.body.style.overflow = 'auto';
   };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  });
 
   return (
     <div css={containerCss}>
@@ -24,7 +34,10 @@ const Guide = (props: GuideProps) => {
         <button
           type="button"
           css={buttonCss}
-          onClick={() => handleSetShowGuide(false)}>
+          onClick={() => {
+            handleSetShowGuide(false);
+            document.body.style.overflow = 'auto';
+          }}>
           <XMonoIcon />
         </button>
         <p css={textCss}>

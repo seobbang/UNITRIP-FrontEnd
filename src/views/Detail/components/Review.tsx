@@ -49,7 +49,6 @@ const Review = () => {
 
   const handleSetShowGuide = (value: boolean) => {
     setShowGuide(value);
-    document.body.style.overflow = '';
   };
 
   const handleFilterState = (category: category, facility: string) => {
@@ -71,7 +70,6 @@ const Review = () => {
   const selectedFilterList = getFilterList(filterState);
 
   useEffect(() => {
-    if (showGuide) document.body.style.overflow = 'hidden';
     if (sessionStorage.getItem(STORAGE_KEY.successToast)) {
       setToast(true);
       sessionStorage.removeItem(STORAGE_KEY.successToast);
