@@ -62,17 +62,6 @@ const PersonalInfo = ({ name, region, setUserData }: PersonalInfoProps) => {
 
             <input type="text" css={input} value={name} disabled />
           </li>
-
-          <li css={formItem}>
-            <span css={title}>생년월일*</span>
-
-            <div css={multiInputSection}>
-              <input type="number" css={birth('year')} disabled value="2015" />
-              <input type="number" css={birth('month')} disabled value="9" />
-              <input type="number" css={birth('date')} disabled value="7" />
-            </div>
-          </li>
-
           <SelectRegion region={selectedRegion} setRegion={setSelectedRegion} />
         </ul>
       </form>
@@ -145,14 +134,4 @@ const input = css`
   width: 100%;
 
   ${inputDefault};
-`;
-
-const multiInputSection = css`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const birth = (variant: string) => css`
-  ${inputDefault};
-  width: ${variant === 'year' ? '38%' : '28%'};
 `;

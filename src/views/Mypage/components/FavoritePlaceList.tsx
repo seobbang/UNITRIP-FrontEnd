@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import { useState } from 'react';
 
+import { DefaultImage } from '@/assets/image';
 import PlaceCard from '@/components/PlaceCard';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
 
@@ -28,7 +29,7 @@ const FavoritePlaceList = (props: placeListProps) => {
           <PlaceCard
             placeName={item.title}
             address={item.address}
-            imgSrc={item.image}
+            imgSrc={item.image || DefaultImage}
             isHeart={favoriteList.includes(Number(item.contentId))}
             buttonDisabled
             contentid={item.contentId}

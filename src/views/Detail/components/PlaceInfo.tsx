@@ -55,12 +55,11 @@ const PlaceInfo = (props: placeInfoProps) => {
       <div css={mapListItem(isClose)}>
         <ClockIcon css={iconCss} />
         <div ref={useTimeRef} css={contentCss(isClose)} />
-        {lineCnt > 1 &&
-          (isClose ? (
-            <ArrowToggleClosed onClick={handleToggle} css={toggleCss} />
-          ) : (
-            <ArrowToggleOpen onClick={handleToggle} css={toggleCss} />
-          ))}
+        {lineCnt > 1 && (
+          <button type="button" onClick={handleToggle} css={toggleCss}>
+            {isClose ? <ArrowToggleClosed /> : <ArrowToggleOpen />}
+          </button>
+        )}
       </div>
     </section>
   );

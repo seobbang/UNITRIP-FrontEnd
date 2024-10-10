@@ -31,18 +31,20 @@ const RecentSearch = () => {
 
   const wordButtonList = wordList.map((item) => {
     return (
-      <li key={item}>
-        <button
-          css={word}
-          type="button"
-          onClick={() => handleOnClickWordButton(item)}>
-          <span css={wordText}>{item}</span>
+      <li key={item} css={wordListCss}>
+        <div css={btnContainerCss}>
+          <button
+            css={word}
+            type="button"
+            onClick={() => handleOnClickWordButton(item)}>
+            {item}
+          </button>
           <button
             type="button"
             onClick={(e) => handleOnClickDeleteButton(e, item)}>
             <ToggleXIcon />
           </button>
-        </button>
+        </div>
       </li>
     );
   });
@@ -65,23 +67,33 @@ const title = css`
   ${FONTS.Body2};
 `;
 
-const word = css`
+const wordListCss = css`
   display: flex;
-  gap: 0.5rem;
-  align-items: center;
 
   width: max-content;
   height: 3.7rem;
-  padding: 0 0.9rem 0 1.5rem;
   border-radius: 4rem;
 
   background-color: ${COLORS.gray1};
 `;
 
-const wordText = css`
+const btnContainerCss = css`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  padding: 0 0.9rem 0 1.5rem;
+
+  & svg {
+    min-width: 1.5rem;
+  }
+`;
+
+const word = css`
   padding-top: 0.2rem;
 
   color: ${COLORS.gray6};
+  white-space: nowrap;
 
   ${FONTS.Body3}
 `;
@@ -93,7 +105,7 @@ const wordContainer = css`
   width: 100vw;
   overflow-x: auto;
 
-  & > li:first-child {
+  & > li:first-of-type {
     margin-left: 2rem;
   }
 

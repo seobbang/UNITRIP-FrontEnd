@@ -41,7 +41,8 @@ const fadeout = keyframes`
 const rootContainer = css`
   position: fixed;
   bottom: 7.5rem;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
 
   width: 100%;
   padding: 0 2rem;

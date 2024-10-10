@@ -61,6 +61,7 @@ const userTypeLayout = css`
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: auto;
 
   height: 100%;
   padding: 2rem;
@@ -87,6 +88,8 @@ const contentContainer = css`
   flex-direction: column;
 
   flex: 1;
+
+  margin-bottom: 5rem;
 `;
 
 const subText = css`

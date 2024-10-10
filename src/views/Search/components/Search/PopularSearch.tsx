@@ -5,14 +5,15 @@ import { COLORS, FONTS } from '@/styles/constants';
 import { setStorageSearchWord } from '@/utils/storageSearchWord';
 
 const WORD_LIST_DATA = [
-  '비대면 관광',
-  '대전시립미술관',
-  '대전 휴양림',
-  '장미꽃 명소',
-  '가족과 함께',
+  '제주도',
+  '대전',
+  '해수욕장',
+  '휴양',
+  '한강공원',
   '미술관',
   '수목원',
-  '음악 분수',
+  '유네스코',
+  '놀이터',
 ];
 
 const pickRandomWord = (array: string[]) => {
