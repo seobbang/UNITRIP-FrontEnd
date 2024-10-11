@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { getPlaceBasedArea } from '@/apis/public/main';
+import Loading from '@/components/Loading';
 import LoginModal from '@/components/LoginModal';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -21,6 +22,7 @@ const NearbyTravel = (props: NearbyTravelProps) => {
   const { isLoggedIn, region, favoriteList } = props;
   const [activateModal, setActivateModal] = useState(false);
   const [placeList, setPlaceList] = useState<PlaceBasedAreaItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const closeModal = () => {
     setActivateModal(false);
@@ -32,10 +34,16 @@ const NearbyTravel = (props: NearbyTravelProps) => {
 
   useAsyncEffect(async () => {
     if (!region) return;
-    const placeList = await getPlaceBasedArea({
-      region: region || '서울',
-    });
-    setPlaceList(placeList === '' ? [] : placeList.item);
+
+    setIsLoading(true);
+    try {
+      const placeList = await getPlaceBasedArea({
+        region: region || '서울',
+      });
+      setPlaceList(placeList === '' ? [] : placeList.item);
+    } finally {
+      setIsLoading(false);
+    }
   }, [region]);
 
   return (
@@ -44,27 +52,31 @@ const NearbyTravel = (props: NearbyTravelProps) => {
         {isLoggedIn && (region || '서울')} 주변 갈 만한 여행지 🗺️
       </h2>
       {isLoggedIn ? (
-        <>
-          <div css={scrollContainer}>
-            <ul css={cardContainer}>
-              {placeList.map(
-                ({ title, addr1, addr2, contentid, firstimage }) => (
-                  <TravelCard
-                    key={contentid}
-                    contentid={contentid}
-                    name={title}
-                    address={`${addr1} ${addr2}`}
-                    imgUrl={firstimage}
-                    isHeart={!!favoriteList?.includes(Number(contentid))}
-                  />
-                ),
-              )}
-            </ul>
-          </div>
-          <Link to="/map" css={link}>
-            {region || '서울'} 여행지 둘러보기
-          </Link>
-        </>
+        isLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <div css={scrollContainer}>
+              <ul css={cardContainer}>
+                {placeList.map(
+                  ({ title, addr1, addr2, contentid, firstimage }) => (
+                    <TravelCard
+                      key={contentid}
+                      contentid={contentid}
+                      name={title}
+                      address={`${addr1} ${addr2}`}
+                      imgUrl={firstimage}
+                      isHeart={!!favoriteList?.includes(Number(contentid))}
+                    />
+                  ),
+                )}
+              </ul>
+            </div>
+            <Link to="/map" css={link}>
+              {region || '서울'} 여행지 둘러보기
+            </Link>
+          </>
+        )
       ) : (
         <div css={infoBox}>
           <p css={infoMessage}>

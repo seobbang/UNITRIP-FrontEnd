@@ -17,18 +17,20 @@ const DetailInfo = (props: detailInfoProps) => {
         <span css={title}>휴무일</span>
         <span
           css={content}
-          dangerouslySetInnerHTML={{ __html: detailInfo.restDate }}></span>
+          dangerouslySetInnerHTML={{
+            __html: detailInfo.restDate || '-',
+          }}></span>
       </div>
       <div css={infoItem}>
         <span css={title}>이용시간</span>
         <span
-          dangerouslySetInnerHTML={{ __html: detailInfo.useTime }}
+          dangerouslySetInnerHTML={{ __html: detailInfo.useTime || '-' }}
           css={content}></span>
       </div>
       <div css={infoItem}>
         <span css={title}>이용요금</span>
         <span
-          dangerouslySetInnerHTML={{ __html: detailInfo.useFee }}
+          dangerouslySetInnerHTML={{ __html: detailInfo.useFee || '-' }}
           css={content}></span>
       </div>
     </section>

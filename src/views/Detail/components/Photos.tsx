@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Loading from '@/components/Loading';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { detailImage1ResItem } from '@/types/detailImage1';
 
 import { getDetailImage1Res } from '../utils/getDetailImage1';
@@ -10,32 +12,38 @@ import EmptyPhoto from './EmptyPhoto';
 const Photos = () => {
   const { contentId } = useParams();
   const [imageList, setImageList] = useState<detailImage1ResItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useAsyncEffect(async () => {
+    setIsLoading(true);
+    try {
       const res = await getDetailImage1Res(Number(contentId));
       if (res) {
         const { item } = res;
         setImageList(item);
       }
-    };
-
-    fetchData();
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  const renderItem = () => {
+    if (imageList.length === 0) {
+      return <EmptyPhoto />;
+    } else {
+      return imageList.map((item, idx) => {
+        return (
+          <div css={photoWrapper} key={idx}>
+            <img src={item.originimgurl} alt={item.imgname} css={photoItem} />
+          </div>
+        );
+      });
+    }
+  };
 
   return (
     <section css={photosContainer(imageList.length)}>
-      {imageList.length === 0 ? (
-        <EmptyPhoto />
-      ) : (
-        imageList.map((item, idx) => {
-          return (
-            <div css={photoWrapper} key={idx}>
-              <img src={item.originimgurl} alt={item.imgname} css={photoItem} />
-            </div>
-          );
-        })
-      )}
+      {isLoading ? <Loading /> : renderItem()}
     </section>
   );
 };

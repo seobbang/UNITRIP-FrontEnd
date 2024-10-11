@@ -4,6 +4,7 @@ import { useState } from 'react';
 import getUserData from '@/apis/supabase/getUserData';
 import { HeaderBackIcon } from '@/assets/icon';
 import Header from '@/components/Header';
+import Loading from '@/components/Loading';
 import MenuBar from '@/components/MenuBar';
 import { Region } from '@/components/SelectRegion';
 import { useAsyncEffect } from '@/hooks/use-async-effect';
@@ -47,7 +48,7 @@ const Mypage = () => {
 
   const renderComponent = (state: string) => {
     if (!userData) {
-      return <div>로딩 중...</div>;
+      return <Loading />;
     }
 
     const userRegion = parseRegion(userData.region);

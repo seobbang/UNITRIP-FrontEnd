@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import Loading from '@/components/Loading';
 import { MAP_FACILITIES_API_KEY } from '@/constants/facilities';
+import { useAsyncEffect } from '@/hooks/use-async-effect';
 import { COLORS, FONTS } from '@/styles/constants';
 import { detailWithTour1ResItem } from '@/types/detailWithTour1';
 
@@ -31,16 +33,19 @@ function FacilityIconList(props: FacilityIConListProps) {
   const { contentId } = useParams();
   const { title, facilities } = props;
   const [facilityList, setFacilityList] = useState<facilityListType[]>();
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useAsyncEffect(async () => {
+    setIsLoading(true);
+    try {
       const res = await getDetailWithTourRes(Number(contentId));
       if (res) {
         const { item } = res;
         filterFacility(item);
       }
-    };
-    fetchData();
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   const filterFacility = (response: detailWithTour1ResItem[]) => {
@@ -63,16 +68,21 @@ function FacilityIconList(props: FacilityIConListProps) {
       <div css={titleText}>
         <span>{title}</span>
       </div>
-
-      <ul css={iconList}>
-        {facilityList &&
-          facilityList.map((item: facilityListType) => (
-            <li key={item.apiKey} css={iconWrapper}>
-              {item.icon}
-              <span css={iconName(item.name, item.isActive)}>{item.name}</span>
-            </li>
-          ))}
-      </ul>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <ul css={iconList}>
+          {facilityList &&
+            facilityList.map((item: facilityListType) => (
+              <li key={item.apiKey} css={iconWrapper}>
+                {item.icon}
+                <span css={iconName(item.name, item.isActive)}>
+                  {item.name}
+                </span>
+              </li>
+            ))}
+        </ul>
+      )}
     </div>
   );
 }

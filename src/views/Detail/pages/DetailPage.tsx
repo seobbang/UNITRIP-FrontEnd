@@ -67,13 +67,9 @@ const DetailPage = () => {
   const kakaoId = sessionStorage.getItem('kakao_id');
   const changeCnt = useRef(1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await getDetailCommon1Res();
-      await getDetailIntro1Res();
-    };
-
-    fetchData();
+  useAsyncEffect(async () => {
+    await getDetailCommon1Res();
+    await getDetailIntro1Res();
   }, []);
 
   useEffect(() => {
@@ -186,7 +182,7 @@ const DetailPage = () => {
             setIsFavorite={setIsFavorite}
             changeCnt={changeCnt.current}
           />
-          <span css={title}>{placeInfo.title}</span>
+          <span css={title}>{placeInfo.title || '-'}</span>
         </div>
       </div>
       <PlaceInfo placeInfo={placeInfo.info} />
@@ -222,7 +218,7 @@ const backgroundImg = (url: string) => css`
 
   background-position: center center;
   background-size: cover;
-  background-image: url(${url});
+  background-image: url(${url || DefaultImage});
   background-repeat: no-repeat;
 `;
 

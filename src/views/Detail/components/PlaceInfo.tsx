@@ -32,9 +32,9 @@ const PlaceInfo = (props: placeInfoProps) => {
 
   useEffect(() => {
     if (useTimeRef.current && addressRef.current && telRef.current) {
-      useTimeRef.current.innerHTML = useTime;
-      addressRef.current.innerHTML = addr;
-      telRef.current.innerHTML = tel;
+      useTimeRef.current.innerHTML = useTime || '-';
+      addressRef.current.innerHTML = addr || '-';
+      telRef.current.innerHTML = tel || '-';
     }
   }, [placeInfo]);
 
