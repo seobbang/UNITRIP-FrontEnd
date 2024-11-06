@@ -60,8 +60,6 @@ const card = css`
 const placeImg = css`
   height: 16.4rem;
 
-  background-color: pink;
-
   border-top-left-radius: 1.2rem;
   border-top-right-radius: 1.2rem;
 `;

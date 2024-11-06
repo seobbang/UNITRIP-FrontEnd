@@ -21,10 +21,10 @@ const ReviewCard = (props: ReviewResponse) => {
   const descriptionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!descriptionRef.current) return;
+
     if (
-      descriptionRef.current &&
-      descriptionRef.current?.scrollHeight >
-        descriptionRef.current?.offsetHeight
+      descriptionRef.current.scrollHeight > descriptionRef.current.offsetHeight
     ) {
       setIsMoreButton(true);
     }

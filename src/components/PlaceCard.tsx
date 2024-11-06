@@ -10,6 +10,7 @@ import {
 import { COLORS, FONTS } from '@/styles/constants';
 
 interface PlaceCardProps {
+  idx: number;
   placeName: string;
   address: string;
   imgSrc: string;
@@ -30,6 +31,7 @@ interface PlaceCardProps {
 
 const PlaceCard = (props: PlaceCardProps) => {
   const {
+    idx,
     placeName,
     address,
     imgSrc,
@@ -47,7 +49,13 @@ const PlaceCard = (props: PlaceCardProps) => {
   };
 
   return (
-    <Link to={`/${contentid}`} css={cardContainerCss(imgSrc, placeName)}>
+    <Link to={`/${contentid}`} css={cardContainerCss(placeName)}>
+      <img
+        src={imgSrc}
+        alt=""
+        loading={idx > 10 ? 'lazy' : 'eager'}
+        css={imgCss}
+      />
       <div css={backgroundCss}>
         <button
           type="button"
@@ -73,7 +81,7 @@ const PlaceCard = (props: PlaceCardProps) => {
 
 export default PlaceCard;
 
-const cardContainerCss = (imgSrc: string, placeName: string) => css`
+const cardContainerCss = (placeName: string) => css`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -83,15 +91,26 @@ const cardContainerCss = (imgSrc: string, placeName: string) => css`
   border-radius: 1.2rem;
 
   background-color: ${placeName ? COLORS.gray4 : COLORS.gray2};
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${imgSrc});
+`;
+
+const imgCss = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 16.8rem;
+  border-radius: 1.2rem;
+
+  object-fit: cover;
 `;
 
 const backgroundCss = css`
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
 
   width: 100%;
   height: 16.8rem;

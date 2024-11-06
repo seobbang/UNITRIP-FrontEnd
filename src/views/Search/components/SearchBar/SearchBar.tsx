@@ -1,6 +1,6 @@
 import { css } from '@emotion/react';
 import { DebouncedFunc } from 'lodash';
-import { ChangeEvent, KeyboardEvent, RefObject, useState } from 'react';
+import { ChangeEvent, KeyboardEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ChevronLeftIcon, ResetXIcon } from '@/assets/icon';
@@ -8,7 +8,7 @@ import { COLORS, FONTS } from '@/styles/constants';
 import { setStorageSearchWord } from '@/utils/storageSearchWord';
 
 interface SearchBarProps {
-  searchInputRef: RefObject<HTMLInputElement>;
+  searchInput: string;
   debounceGetWordList: DebouncedFunc<(searchWord: string) => Promise<void>>;
   resetRelatedWordList: () => void;
   initialWord?: string;
@@ -17,7 +17,7 @@ interface SearchBarProps {
 
 const SearchBar = (props: SearchBarProps) => {
   const {
-    searchInputRef,
+    searchInput,
     debounceGetWordList,
     resetRelatedWordList,
     initialWord,
@@ -27,10 +27,6 @@ const SearchBar = (props: SearchBarProps) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const [showResetButton, setShowResetButton] = useState(
-    !!searchInputRef.current?.value || !!initialWord,
-  );
-
   const handleOnClickPrevButton = () => {
     navigate(-1);
     resetRelatedWordList();
@@ -38,29 +34,26 @@ const SearchBar = (props: SearchBarProps) => {
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
+    handleSearchInputValue(value);
 
     if (!value || initialWord === value) {
       resetRelatedWordList();
-      setShowResetButton(false);
       return;
     }
 
     debounceGetWordList(value);
-    setShowResetButton(true);
   };
 
   const handleOnClick = () => {
-    setShowResetButton(false);
     resetRelatedWordList();
     handleSearchInputValue('');
   };
 
   const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchInputRef.current) {
-      const { value } = searchInputRef.current;
-      setStorageSearchWord(value);
+    if (e.key === 'Enter' && searchInput) {
+      setStorageSearchWord(searchInput);
       resetRelatedWordList();
-      navigate(`/search/${value}`, {
+      navigate(`/search/${searchInput}`, {
         replace: pathname.startsWith('/search/'),
       });
     }
@@ -72,14 +65,13 @@ const SearchBar = (props: SearchBarProps) => {
         <ChevronLeftIcon />
       </button>
       <input
-        ref={searchInputRef}
         css={inputCss}
+        value={searchInput}
         placeholder="어디로, 어떤 여행을 떠날까요?"
-        defaultValue={initialWord}
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
       />
-      {showResetButton && (
+      {searchInput && (
         <button type="button" onClick={handleOnClick}>
           <ResetXIcon css={deleteButtonCss} />
         </button>

@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
@@ -20,7 +20,7 @@ const PATH_MATCH = [
   { url: '/mypage', name: '마이', icon: <UserMonoIcon /> },
 ];
 
-const MenuBar = () => {
+const MenuBar = memo(() => {
   const { pathname } = useLocation();
   const firstPathname = `/${pathname.split('/')[1]}`;
   const navigate = useNavigate();
@@ -67,7 +67,9 @@ const MenuBar = () => {
       {activateModal && <LoginModal onClick={closeModal} />}
     </>
   );
-};
+});
+
+MenuBar.displayName = 'MenuBar';
 
 export default MenuBar;
 
@@ -75,6 +77,7 @@ const navCss = css`
   display: flex;
   position: fixed;
   bottom: 1.6rem;
+  z-index: 999;
 
   width: 100vw;
 `;

@@ -38,6 +38,7 @@ export const useInfiniteScroll = ({
     target.current && observer.observe(target.current);
 
     return () => {
+      //주시 종료
       target.current && observer.unobserve(target.current);
     };
   }, deps);

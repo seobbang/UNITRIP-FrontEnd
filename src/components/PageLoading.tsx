@@ -1,18 +1,9 @@
 import { css } from '@emotion/react';
-import { useEffect } from 'react';
 
 import { WhiteSpinnerGIF } from '@/assets/image';
 import { COLORS, FONTS } from '@/styles/constants';
 
 const PageLoading = () => {
-  useEffect(() => {
-    // 스크롤 방지
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, []);
   return (
     <div css={dataContainer}>
       <img css={img} src={WhiteSpinnerGIF} alt="spinner" />
@@ -32,10 +23,10 @@ const dataContainer = css`
   top: 0;
   z-index: 999;
 
-  width: 100dvw;
   width: 100%;
-  height: 100dvh;
+  width: 100dvw;
   height: 100%;
+  height: 100dvh;
 
   background-color: rgb(82 82 82 / 72%);
 `;

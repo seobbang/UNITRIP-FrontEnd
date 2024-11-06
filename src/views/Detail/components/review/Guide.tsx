@@ -17,7 +17,6 @@ const Guide = (props: GuideProps) => {
   const hideGuideForADay = () => {
     setStorageHideGuide(STORAGE_KEY.hideReviewFilterGuide);
     handleSetShowGuide(false);
-    document.body.style.overflow = 'auto';
   };
 
   useEffect(() => {
@@ -26,7 +25,7 @@ const Guide = (props: GuideProps) => {
     return () => {
       document.body.style.overflow = 'auto';
     };
-  });
+  }, []);
 
   return (
     <div css={containerCss}>
@@ -36,7 +35,6 @@ const Guide = (props: GuideProps) => {
           css={buttonCss}
           onClick={() => {
             handleSetShowGuide(false);
-            document.body.style.overflow = 'auto';
           }}>
           <XMonoIcon />
         </button>
@@ -83,7 +81,7 @@ const section2Css = css`
 `;
 
 const buttonCss = css`
-  position: absolute;
+  position: fixed;
   top: 2.5rem;
   right: 2.4rem;
 

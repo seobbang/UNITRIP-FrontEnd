@@ -1,4 +1,5 @@
 import { css } from '@emotion/react';
+import { useEffect } from 'react';
 
 import { CheckFillIcon, XMonoIcon } from '@/assets/icon';
 import { COLORS, FONTS } from '@/styles/constants';
@@ -17,6 +18,14 @@ const Guide = (props: GuideProps) => {
     setStorageHideGuide(STORAGE_KEY.hideSearchGuide);
     handleSetShowGuide(false);
   };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   return (
     <div css={containerCss}>

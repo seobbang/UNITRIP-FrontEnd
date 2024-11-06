@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import getReviews from '@/apis/supabase/getReviews';
@@ -67,14 +67,12 @@ const Review = () => {
     setFilterState(value);
   };
 
-  const selectedFilterList = getFilterList(filterState);
+  if (sessionStorage.getItem(STORAGE_KEY.successToast)) {
+    setToast(true);
+    sessionStorage.removeItem(STORAGE_KEY.successToast);
+  }
 
-  useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY.successToast)) {
-      setToast(true);
-      sessionStorage.removeItem(STORAGE_KEY.successToast);
-    }
-  }, []);
+  const selectedFilterList = getFilterList(filterState);
 
   useAsyncEffect(async () => {
     setLoading(true);

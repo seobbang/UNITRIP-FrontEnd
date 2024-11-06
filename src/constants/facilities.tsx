@@ -88,7 +88,7 @@ import {
   WheelChairInAcitveIcon,
   WheelChairSelectedIcon,
 } from '@/assets/icon';
-import { BarrierFreeItem } from '@/types/search';
+import { FilterFacilities } from '@/views/Search/types/category';
 
 export interface Facility {
   name: string;
@@ -264,7 +264,7 @@ export const INFANT_FACILITIES: Facility[] = [
   },
 ];
 
-export const MAP_FACILITIES_API_KEY: Record<string, keyof BarrierFreeItem> = {
+export const MAP_FACILITIES_API_KEY: Record<string, FilterFacilities> = {
   휠체어: 'wheelchair',
   출입통로: 'exit',
   엘리베이터: 'elevator',

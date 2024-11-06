@@ -24,9 +24,10 @@ const FavoritePlaceList = (props: placeListProps) => {
 
   return (
     <ul css={listContainer}>
-      {cardInfoList.map((item) => (
+      {cardInfoList.map((item, idx) => (
         <li key={item.contentId} css={itemContainer}>
           <PlaceCard
+            idx={idx}
             placeName={item.title}
             address={item.address}
             imgSrc={item.image || DefaultImage}
